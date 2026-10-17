@@ -1,525 +1,757 @@
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#101b2d">
-  <title>CommunityGlobal</title>
-
-  <style>
-    :root {
-      --bg: #101b2d;
-      --panel: #19283e;
-      --panel2: #223650;
-      --accent: #73f5c5;
-      --text: #f4f7ff;
-      --muted: #aab8cd;
-      --border: #344762;
-      --danger: #ff8c9a;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: system-ui, sans-serif;
-      min-height: 100vh;
-    }
-
-    button, input {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    .hidden { display: none !important; }
-
-    .shell {
-      width: min(100%, 520px);
-      margin: auto;
-      min-height: 100vh;
-      background: var(--bg);
-      border-inline: 1px solid var(--border);
-    }
-
-    header {
-      background: var(--panel);
-      padding: 20px;
-      border-bottom: 2px solid var(--accent);
-    }
-
-    .brand {
-      font-size: 24px;
-      font-weight: 900;
-      letter-spacing: -.8px;
-    }
-
-    .brand span { color: var(--accent); }
-
-    .sub {
-      color: var(--muted);
-      font-size: 13px;
-      margin-top: 4px;
-    }
-
-    main { padding: 20px; }
-
-    .card {
-      background: var(--panel);
-      border: 2px solid var(--border);
-      border-radius: 18px;
-      padding: 20px;
-      box-shadow: 5px 5px 0 #070d17;
-      margin-bottom: 18px;
-    }
-
-    h1, h2, p { margin-top: 0; }
-
-    h1 { font-size: 25px; }
-    h2 { font-size: 19px; }
-
-    .muted {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    label {
-      display: block;
-      font-size: 13px;
-      margin: 14px 0 6px;
-      color: var(--muted);
-    }
-
-    input {
-      width: 100%;
-      padding: 13px;
-      background: #0e1929;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      color: white;
-      outline-color: var(--accent);
-    }
-
-    .primary, .secondary, .tab {
-      padding: 12px 15px;
-      border-radius: 10px;
-      font-weight: 750;
-    }
-
-    .primary {
-      width: 100%;
-      margin-top: 16px;
-      background: var(--accent);
-      color: #10251f;
-      border: 2px solid #10251f;
-      box-shadow: 3px 3px 0 #070d17;
-    }
-
-    .secondary {
-      background: var(--panel2);
-      border: 1px solid var(--border);
-      color: var(--text);
-    }
-
-    .switch {
-      text-align: center;
-      margin-top: 18px;
-      font-size: 14px;
-      color: var(--muted);
-    }
-
-    .link {
-      border: 0;
-      background: none;
-      color: var(--accent);
-      font-weight: bold;
-      padding: 4px;
-    }
-
-    .notice {
-      padding: 12px;
-      margin-top: 14px;
-      border-radius: 10px;
-      background: var(--panel2);
-      font-size: 14px;
-      line-height: 1.5;
-      overflow-wrap: anywhere;
-    }
-
-    .notice.error { color: var(--danger); }
-    .notice.success { color: var(--accent); }
-
-    .user-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .avatar {
-      width: 45px;
-      height: 45px;
-      display: grid;
-      place-items: center;
-      flex-shrink: 0;
-      background: var(--accent);
-      color: #10251f;
-      border-radius: 14px;
-      font-weight: 900;
-      font-size: 20px;
-    }
-
-    .profile {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
-    }
-
-    .profile-name { font-weight: 800; overflow-wrap: anywhere; }
-
-    .badge {
-      color: var(--accent);
-      font-size: 12px;
-      font-weight: bold;
-    }
-
-    .tabs {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin: 18px 0;
-    }
-
-    .tab {
-      background: var(--panel);
-      color: var(--muted);
-      border: 1px solid var(--border);
-    }
-
-    .tab.active {
-      color: var(--accent);
-      border-color: var(--accent);
-    }
-
-    .empty {
-      text-align: center;
-      padding: 35px 12px;
-    }
-
-    .empty-icon { font-size: 40px; margin-bottom: 12px; }
-
-    footer {
-      padding: 20px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 12px;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f4f0e8">
+<title>CommunityGlobal</title>
+<style>
+:root {
+  --paper:#f4f0e8;
+  --white:#fffdf8;
+  --ink:#22251f;
+  --muted:#77796f;
+  --line:#282b25;
+  --lime:#d8ff65;
+  --purple:#c8b8ff;
+  --pink:#ffb9c9;
+  --blue:#b9e3ff;
+  --shadow:4px 4px 0 var(--ink);
+  --radius:18px;
+}
+* { box-sizing:border-box }
+body {
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;
+}
+button,input { font:inherit }
+button { cursor:pointer; color:inherit }
+button:focus-visible,input:focus-visible {
+  outline:3px solid #7c65e8; outline-offset:3px;
+}
+.hidden { display:none!important }
+.app { min-height:100dvh; max-width:1200px; margin:auto; padding:22px }
+.topbar {
+  display:flex; align-items:center; justify-content:space-between;
+  gap:15px; padding:18px 22px; background:var(--white);
+  border:2px solid var(--line); border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+.brand { display:flex; align-items:center; gap:12px; min-width:0 }
+.brand-mark {
+  display:grid; place-items:center; width:44px; height:44px;
+  border:2px solid var(--ink); border-radius:13px;
+  background:var(--lime); font-weight:1000; font-size:20px;
+}
+.brand-name { font-size:clamp(19px,3vw,27px); font-weight:950; letter-spacing:-1.3px }
+.brand-name span { color:#7160c9 }
+.eyebrow {
+  text-transform:uppercase; font-size:10px; letter-spacing:1.7px;
+  font-weight:850; color:var(--muted); margin-top:3px
+}
+.pill {
+  border:1.5px solid var(--ink); border-radius:100px;
+  padding:8px 12px; font-size:12px; font-weight:800; background:var(--lime)
+}
+.layout {
+  display:grid; grid-template-columns:220px minmax(0,1fr);
+  gap:24px; margin-top:26px; align-items:start
+}
+.sidebar {
+  position:sticky; top:20px; background:var(--white);
+  border:2px solid var(--line); border-radius:var(--radius);
+  padding:12px; box-shadow:var(--shadow)
+}
+.nav {
+  display:flex; align-items:center; gap:12px; width:100%;
+  padding:13px 12px; margin:3px 0; text-align:left;
+  background:transparent; border:1.5px solid transparent;
+  border-radius:12px; font-weight:800; transition:transform .18s,background .18s
+}
+.nav:hover { transform:translateX(3px); background:#f1eee6 }
+.nav.active { background:var(--lime); border-color:var(--ink); box-shadow:2px 2px 0 var(--ink) }
+.nav svg { width:20px; height:20px; flex:none }
+.sidebar-bottom { margin-top:16px; padding:14px 10px 5px; border-top:1px solid #d7d3c9 }
+.mini-user { font-weight:850; overflow-wrap:anywhere }
+.mini-handle { font-size:12px; color:var(--muted); margin-top:4px }
+.content { min-width:0 }
+.page-head {
+  display:flex; justify-content:space-between; align-items:end;
+  gap:12px; margin:4px 0 20px
+}
+.page-head h1 { font-size:clamp(27px,4vw,40px); letter-spacing:-1.8px; margin:0; line-height:1.1 }
+.page-head p { color:var(--muted); margin:8px 0 0; font-size:14px }
+.card {
+  border:2px solid var(--line); border-radius:var(--radius);
+  background:var(--white); padding:22px; box-shadow:var(--shadow);
+  min-width:0; margin-bottom:20px
+}
+.card h2 { margin:0 0 8px; font-size:20px; letter-spacing:-.5px }
+.muted { color:var(--muted); font-size:14px; line-height:1.6 }
+.field { margin:16px 0 }
+.field label { display:block; font-size:12px; font-weight:850; margin-bottom:7px }
+.input {
+  width:100%; min-width:0; padding:13px 14px;
+  border:1.5px solid var(--line); border-radius:11px;
+  background:#fff; color:var(--ink)
+}
+.row { display:flex; gap:10px; align-items:center }
+.row .input { flex:1 }
+.btn {
+  border:1.5px solid var(--line); border-radius:11px;
+  background:var(--white); padding:12px 15px; font-weight:850;
+  transition:transform .15s,box-shadow .15s
+}
+.btn:hover { transform:translate(-1px,-1px); box-shadow:2px 2px 0 var(--ink) }
+.btn-primary { background:var(--lime) }
+.btn-purple { background:var(--purple) }
+.btn:disabled { opacity:.55; cursor:wait }
+.notice {
+  padding:12px 14px; border:1.5px solid var(--line);
+  border-radius:11px; background:var(--blue); font-size:13px;
+  line-height:1.5; overflow-wrap:anywhere; margin:14px 0
+}
+.notice.error { background:var(--pink) }
+.notice.success { background:var(--lime) }
+.auth-wrap { max-width:510px; margin:34px auto }
+.auth-logo { text-align:center; margin-bottom:25px }
+.auth-logo .brand-mark { margin:0 auto 12px; width:58px; height:58px; font-size:26px }
+.auth-logo h1 { font-size:34px; letter-spacing:-1.5px; margin:0 }
+.auth-switch { text-align:center; font-size:13px; margin-top:17px; color:var(--muted) }
+.text-button { border:0; background:none; color:#5d4bb3; font-weight:900; padding:5px }
+.results { display:grid; gap:10px; margin-top:16px }
+.person {
+  display:flex; align-items:center; gap:12px; padding:13px;
+  border:1.5px solid var(--line); border-radius:13px; background:#fff
+}
+.avatar {
+  width:43px; height:43px; flex:none; display:grid; place-items:center;
+  border:1.5px solid var(--line); border-radius:12px;
+  background:var(--purple); font-size:18px; font-weight:950
+}
+.person-info { flex:1; min-width:0 }
+.person-name { font-weight:900; overflow-wrap:anywhere }
+.handle { font-size:12px; color:var(--muted); margin-top:4px }
+.empty {
+  padding:32px 15px; border:1.5px dashed #aaa69b;
+  border-radius:14px; text-align:center; color:var(--muted);
+  font-size:14px; line-height:1.6
+}
+.chat-layout { display:grid; grid-template-columns:minmax(180px,.75fr) minmax(0,1.5fr); gap:15px }
+.chat-list { display:grid; align-content:start; gap:8px }
+.chat-entry {
+  display:flex; align-items:center; gap:9px; width:100%;
+  padding:11px; border:1.5px solid var(--line); border-radius:12px;
+  background:#fff; text-align:left
+}
+.chat-entry.active { background:var(--purple) }
+.chat-entry .avatar { width:37px; height:37px }
+.chat-window {
+  min-width:0; display:flex; flex-direction:column;
+  border:1.5px solid var(--line); border-radius:14px; overflow:hidden;
+  min-height:390px; background:#faf8f2
+}
+.chat-head { padding:13px; border-bottom:1.5px solid var(--line); background:#fff }
+.messages { flex:1; display:flex; flex-direction:column; gap:9px; padding:14px; overflow:auto; max-height:420px }
+.bubble {
+  max-width:85%; padding:10px 12px; border:1.5px solid var(--line);
+  border-radius:12px; background:white; align-self:flex-start;
+  overflow-wrap:anywhere; white-space:pre-wrap; font-size:14px; line-height:1.5
+}
+.bubble.mine { align-self:flex-end; background:var(--lime) }
+.time { display:block; font-size:10px; color:var(--muted); margin-top:5px }
+.composer { display:flex; gap:8px; padding:10px; border-top:1.5px solid var(--line); background:white }
+.composer .input { padding:11px }
+.profile-box { display:flex; align-items:center; gap:14px; margin-bottom:15px }
+.profile-box .avatar { width:58px; height:58px; font-size:24px }
+.setting-row { display:flex; align-items:center; justify-content:space-between; gap:15px; padding:15px 0; border-top:1px solid #dedacf }
+.setting-row strong { display:block; font-size:14px }
+.setting-row small { color:var(--muted); display:block; margin-top:4px; overflow-wrap:anywhere }
+footer { text-align:center; color:var(--muted); font-size:12px; padding:24px 0 6px }
+.mobile-nav { display:none }
+@media(max-width:760px) {
+  .app { padding:12px 12px 95px }
+  .topbar { padding:13px; box-shadow:3px 3px 0 var(--ink) }
+  .brand-mark { width:38px; height:38px }
+  .layout { display:block; margin-top:20px }
+  .sidebar { display:none }
+  .mobile-nav {
+    position:fixed; z-index:5; display:grid; grid-template-columns:repeat(5,1fr);
+    bottom:0; left:0; right:0; padding:8px 4px max(8px,env(safe-area-inset-bottom));
+    background:var(--white); border-top:2px solid var(--ink)
+  }
+  .mobile-nav .nav {
+    display:flex; flex-direction:column; justify-content:center;
+    gap:4px; padding:7px 1px; margin:0; font-size:10px;
+    border-radius:9px; text-align:center
+  }
+  .mobile-nav .nav svg { width:21px; height:21px }
+  .chat-layout { grid-template-columns:1fr }
+  .chat-window { min-height:330px }
+  .chat-list { grid-template-columns:1fr }
+  .card { padding:16px; box-shadow:3px 3px 0 var(--ink) }
+  .page-head h1 { font-size:29px }
+}
+</style>
 </head>
-
 <body>
-  <div class="shell">
-    <header>
-      <div class="brand">Community<span>Global</span></div>
-      <div class="sub">Connect your world.</div>
-    </header>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">C.</div>
+      <div>
+        <div class="brand-name">Community<span>Global</span></div>
+        <div class="eyebrow">A place to connect</div>
+      </div>
+    </div>
+    <div id="topUser" class="pill">Guest</div>
+  </header>
 
-    <main>
-      <section id="authSection">
+  <section id="authScreen" class="auth-wrap">
+    <div class="auth-logo">
+      <div class="brand-mark">C.</div>
+      <h1 id="authTitle">Your people, your space.</h1>
+      <p class="muted" id="authSubtitle">Masuk untuk terhubung dengan komunitasmu.</p>
+    </div>
+    <div class="card">
+      <form id="authForm">
+        <div id="usernameField" class="field hidden">
+          <label for="usernameInput">USERNAME</label>
+          <input class="input" id="usernameInput" maxlength="24"
+            minlength="3" autocomplete="username" placeholder="contoh: nama_kamu"
+            pattern="[A-Za-z0-9_]{3,24}">
+          <p class="muted">3–24 karakter: huruf, angka, atau garis bawah.</p>
+        </div>
+        <div class="field">
+          <label for="emailInput">EMAIL</label>
+          <input class="input" id="emailInput" type="email" required
+            autocomplete="email" placeholder="kamu@email.com">
+        </div>
+        <div class="field">
+          <label for="passwordInput">PASSWORD</label>
+          <input class="input" id="passwordInput" type="password" required
+            minlength="6" autocomplete="current-password" placeholder="Minimal 6 karakter">
+        </div>
+        <button id="authSubmit" class="btn btn-primary" style="width:100%" type="submit">Masuk</button>
+      </form>
+      <div id="authNotice" class="notice hidden" role="status" aria-live="polite"></div>
+      <div class="auth-switch">
+        <span id="switchLabel">Belum punya akun?</span>
+        <button id="switchAuth" class="text-button" type="button">Daftar</button>
+      </div>
+    </div>
+  </section>
+
+  <div id="mainScreen" class="layout hidden">
+    <aside class="sidebar">
+      <div id="sideNav"></div>
+      <div class="sidebar-bottom">
+        <div class="mini-user" id="sideUsername">Pengguna</div>
+        <div class="mini-handle">Personal space</div>
+      </div>
+    </aside>
+    <main class="content">
+      <div class="page-head">
+        <div>
+          <h1 id="pageTitle">Chat</h1>
+          <p id="pageSubtitle">Temukan orang dan mulai percakapan.</p>
+        </div>
+        <div class="pill">BETA</div>
+      </div>
+
+      <section id="page-chat" class="page">
         <div class="card">
-          <h1 id="authTitle">Selamat datang 👋</h1>
-          <p class="muted" id="authDescription">
-            Masuk untuk melanjutkan ke CommunityGlobal.
-          </p>
-
-          <form id="authForm">
-            <div id="nameGroup" class="hidden">
-              <label for="fullName">Nama tampilan</label>
-              <input id="fullName" maxlength="60"
-                     autocomplete="name" placeholder="Nama kamu">
-            </div>
-
-            <label for="email">Email</label>
-            <input id="email" type="email" required
-                   autocomplete="email" placeholder="nama@email.com">
-
-            <label for="password">Password</label>
-            <input id="password" type="password" required
-                   minlength="6" autocomplete="current-password"
-                   placeholder="Minimal 6 karakter">
-
-            <button id="submitButton" class="primary" type="submit">
-              Masuk
-            </button>
+          <h2>Temukan teman</h2>
+          <p class="muted">Cari username pengguna CommunityGlobal. Email tidak ditampilkan.</p>
+          <form id="searchForm" class="row">
+            <input id="searchInput" class="input" maxlength="24"
+              placeholder="Cari username..." autocomplete="off" required>
+            <button class="btn btn-primary" type="submit">Cari</button>
           </form>
-
-          <div id="authNotice" class="notice hidden"
-               role="status" aria-live="polite"></div>
-
-          <div class="switch">
-            <span id="switchText">Belum punya akun?</span>
-            <button id="switchMode" class="link" type="button">
-              Daftar
-            </button>
+          <div id="searchNotice" class="notice hidden" role="status"></div>
+          <div id="searchResults" class="results"></div>
+        </div>
+        <div class="card">
+          <h2>Pesan pribadi</h2>
+          <p class="muted">Percakapanmu akan muncul di sini setelah kamu membuka chat dengan seseorang.</p>
+          <div class="chat-layout">
+            <div id="chatList" class="chat-list">
+              <div class="empty">Belum ada percakapan.</div>
+            </div>
+            <div id="chatWindow" class="chat-window">
+              <div class="empty">Pilih pengguna dari hasil pencarian untuk memulai chat.</div>
+            </div>
           </div>
+          <div id="chatNotice" class="notice hidden" role="status"></div>
         </div>
       </section>
 
-      <section id="appSection" class="hidden">
+      <section id="page-pembaruan" class="page hidden">
         <div class="card">
-          <div class="user-row">
-            <div class="profile">
-              <div class="avatar" id="avatar">C</div>
-              <div>
-                <div class="profile-name" id="displayName">Pengguna</div>
-                <div class="sub" id="displayEmail"></div>
-                <div class="badge">● Akun CommunityGlobal</div>
-              </div>
-            </div>
-            <button class="secondary" id="logoutButton" type="button">
-              Keluar
-            </button>
-          </div>
+          <h2>Pembaruan</h2>
+          <p class="muted">Tempat untuk pembaruan profil, kabar, dan aktivitas komunitas.</p>
+          <div class="empty">Belum ada pembaruan untuk ditampilkan.</div>
         </div>
+      </section>
 
-        <div class="tabs">
-          <button class="tab active" data-page="chat" type="button">Chat</button>
-          <button class="tab" data-page="status" type="button">Status</button>
-          <button class="tab" data-page="calls" type="button">Panggilan</button>
-        </div>
-
+      <section id="page-komunitas" class="page hidden">
         <div class="card">
-          <div id="chatPage">
-            <div class="empty">
-              <div class="empty-icon">💬</div>
-              <h2>Pesan kamu</h2>
-              <p class="muted">
-                Akun berhasil masuk. Fitur percakapan akan dihubungkan
-                ke database pada tahap berikutnya.
-              </p>
-            </div>
-          </div>
-
-          <div id="statusPage" class="hidden">
-            <div class="empty">
-              <div class="empty-icon">⭕</div>
-              <h2>Status</h2>
-              <p class="muted">Fitur status belum diaktifkan.</p>
-            </div>
-          </div>
-
-          <div id="callsPage" class="hidden">
-            <div class="empty">
-              <div class="empty-icon">📞</div>
-              <h2>Panggilan</h2>
-              <p class="muted">Fitur panggilan belum diaktifkan.</p>
-            </div>
-          </div>
+          <h2>Komunitas</h2>
+          <p class="muted">Ruang untuk menemukan komunitas yang sesuai minatmu.</p>
+          <div class="empty">Komunitas akan tersedia setelah fitur komunitas diaktifkan.</div>
         </div>
+      </section>
 
-        <div id="appNotice" class="notice hidden"
-             role="status" aria-live="polite"></div>
+      <section id="page-calls" class="page hidden">
+        <div class="card">
+          <h2>Calls</h2>
+          <p class="muted">Riwayat panggilan akan ditampilkan di halaman ini.</p>
+          <div class="empty">Panggilan suara dan video belum diaktifkan.</div>
+        </div>
+      </section>
+
+      <section id="page-setting" class="page hidden">
+        <div class="card">
+          <h2>Profil kamu</h2>
+          <div class="profile-box">
+            <div id="profileAvatar" class="avatar">C</div>
+            <div>
+              <div id="profileUsername" class="person-name">Pengguna</div>
+              <div class="handle">Username publik</div>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div><strong>Username</strong><small id="settingUsername"></small></div>
+          </div>
+          <div class="setting-row">
+            <div><strong>Status akun</strong><small>Terhubung melalui Supabase Auth</small></div>
+          </div>
+          <div class="setting-row">
+            <div><strong>Privasi</strong><small>Email tidak ditampilkan di hasil pencarian.</small></div>
+          </div>
+          <button id="logoutButton" class="btn btn-purple" type="button">Keluar dari akun</button>
+        </div>
       </section>
     </main>
-
-    <footer>CommunityGlobal · Made for community</footer>
   </div>
+  <footer>CommunityGlobal · Built for people</footer>
+</div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    /*
-      GANTI DUA NILAI DI BAWAH DENGAN DATA PROJECT SUPABASE KAMU.
-      Gunakan Project URL dan Publishable Key, bukan secret key.
-    */
-    const SUPABASE_URL = "https://pyxmmclihlsoywctbrno.supabase.co";
-    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Z7bHHgRe5Eld4rxjKYOVHg_uNjKU909";
+<nav id="mobileNav" class="mobile-nav hidden" aria-label="Navigasi utama"></nav>
 
-    const $ = (id) => document.getElementById(id);
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+"use strict";
 
-    let client = null;
-    let isRegister = false;
+const SUPABASE_URL = "TEMPEL_PROJECT_URL";
+const SUPABASE_PUBLISHABLE_KEY = "TEMPEL_PUBLISHABLE_KEY";
 
-    function showNotice(id, message, type = "") {
-      const el = $(id);
-      el.textContent = message;
-      el.className = "notice" + (type ? " " + type : "");
-      el.classList.remove("hidden");
+const $ = id => document.getElementById(id);
+let db = null;
+let currentUser = null;
+let currentProfile = null;
+let activePeer = null;
+let activePage = "chat";
+let authMode = "login";
+let refreshTimer = null;
+
+const navItems = [
+  {id:"chat", label:"Chat", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H5l-2 2v-6a7.5 7.5 0 1 1 17-3.5Z"/></svg>'},
+  {id:"pembaruan", label:"Pembaruan", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>'},
+  {id:"komunitas", label:"Komunitas", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20v-2a6 6 0 0 1 12 0v2M16 15a5 5 0 0 1 5 5"/></svg>'},
+  {id:"calls", label:"Calls", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 3H4a1 1 0 0 0-1 1c0 9.4 7.6 17 17 17a1 1 0 0 0 1-1v-3l-5-2-2 3a14 14 0 0 1-6-6l3-2-2-5Z"/></svg>'},
+  {id:"setting", label:"Setting", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="m19 13.5 2 1.5-2 3-2.5-1-2 1-.5 2h-4l-.5-2-2-1L5 18l-2-3 2-1.5v-3L3 9l2-3 2.5 1 2-1 .5-2h4l.5 2 2 1L19 6l2 3-2 1.5Z"/></svg>'}
+];
+
+function notice(id, message, kind="") {
+  const el = $(id);
+  el.textContent = message;
+  el.className = "notice" + (kind ? " " + kind : "");
+  el.classList.remove("hidden");
+}
+function clearNotice(id) { $(id).classList.add("hidden"); }
+
+function setAuthMode(mode) {
+  authMode = mode;
+  const register = mode === "register";
+  $("authTitle").textContent = register ? "Join the community." : "Your people, your space.";
+  $("authSubtitle").textContent = register
+    ? "Buat akun untuk mulai terhubung."
+    : "Masuk untuk terhubung dengan komunitasmu.";
+  $("usernameField").classList.toggle("hidden", !register);
+  $("usernameInput").required = register;
+  $("authSubmit").textContent = register ? "Buat akun" : "Masuk";
+  $("switchLabel").textContent = register ? "Sudah punya akun?" : "Belum punya akun?";
+  $("switchAuth").textContent = register ? "Masuk" : "Daftar";
+  $("passwordInput").autocomplete = register ? "new-password" : "current-password";
+  clearNotice("authNotice");
+}
+
+function makeNav() {
+  const render = () => navItems.map(item =>
+    `<button class="nav ${activePage === item.id ? "active" : ""}" data-nav="${item.id}" type="button">${item.icon}<span>${item.label}</span></button>`
+  ).join("");
+  $("sideNav").innerHTML = render();
+  $("mobileNav").innerHTML = render();
+  document.querySelectorAll("[data-nav]").forEach(button => {
+    button.addEventListener("click", () => showPage(button.dataset.nav));
+  });
+}
+
+function showPage(page) {
+  activePage = page;
+  document.querySelectorAll(".page").forEach(el => el.classList.add("hidden"));
+  $("page-" + page).classList.remove("hidden");
+  const selected = navItems.find(item => item.id === page);
+  $("pageTitle").textContent = selected.label;
+  $("pageSubtitle").textContent = ({
+    chat:"Temukan orang dan mulai percakapan.",
+    pembaruan:"Lihat kabar dan aktivitas terbaru.",
+    komunitas:"Temukan ruang untuk berbagi minat.",
+    calls:"Riwayat panggilan kamu.",
+    setting:"Kelola akun dan preferensi kamu."
+  })[page];
+  makeNav();
+}
+
+function showApp(profile) {
+  currentProfile = profile;
+  $("authScreen").classList.add("hidden");
+  $("mainScreen").classList.remove("hidden");
+  $("mobileNav").classList.remove("hidden");
+  const username = profile.username;
+  $("topUser").textContent = "@" + username;
+  $("sideUsername").textContent = "@" + username;
+  $("profileUsername").textContent = "@" + username;
+  $("settingUsername").textContent = "@" + username;
+  $("profileAvatar").textContent = username.slice(0,1).toUpperCase();
+  showPage(activePage);
+  loadChatList();
+}
+
+function showSignedOut() {
+  currentUser = null;
+  currentProfile = null;
+  activePeer = null;
+  if (refreshTimer) clearInterval(refreshTimer);
+  $("authScreen").classList.remove("hidden");
+  $("mainScreen").classList.add("hidden");
+  $("mobileNav").classList.add("hidden");
+}
+
+async function loadProfile(user) {
+  let {data, error} = await db.from("profiles")
+    .select("id,username").eq("id", user.id).maybeSingle();
+
+  if (error) throw error;
+
+  // Trigger SQL biasanya membuat profil ketika akun didaftarkan.
+  if (!data) {
+    const requested = (user.user_metadata?.username || "").toLowerCase();
+    if (!/^[a-z0-9_]{3,24}$/.test(requested)) {
+      throw new Error("Profil belum tersedia. Periksa trigger SQL di Supabase.");
+    }
+    const inserted = await db.from("profiles")
+      .insert({id:user.id, username:requested})
+      .select("id,username").single();
+    if (inserted.error) throw inserted.error;
+    data = inserted.data;
+  }
+  return data;
+}
+
+async function enterApp(user) {
+  currentUser = user;
+  const profile = await loadProfile(user);
+  if (!profile) throw new Error("Profil pengguna tidak ditemukan.");
+  showApp(profile);
+}
+
+async function initialize() {
+  if (!window.supabase) {
+    notice("authNotice", "Pustaka Supabase gagal dimuat. Periksa koneksi internet.", "error");
+    return;
+  }
+  if (SUPABASE_URL === "TEMPEL_PROJECT_URL" ||
+      SUPABASE_PUBLISHABLE_KEY === "TEMPEL_PUBLISHABLE_KEY") {
+    notice("authNotice", "Isi Project URL dan Publishable Key di kode terlebih dahulu.", "error");
+    return;
+  }
+
+  try {
+    db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+    const {data, error} = await db.auth.getSession();
+    if (error) throw error;
+    if (data.session) {
+      try { await enterApp(data.session.user); }
+      catch (e) { notice("authNotice", "Gagal memuat profil: " + e.message, "error"); }
     }
 
-    function hideNotice(id) {
-      $(id).classList.add("hidden");
-    }
-
-    function setupAuthMode(register) {
-      isRegister = register;
-      $("authTitle").textContent = register ? "Buat akun ✨" : "Selamat datang 👋";
-      $("authDescription").textContent = register
-        ? "Daftar menggunakan email dan password."
-        : "Masuk untuk melanjutkan ke CommunityGlobal.";
-      $("nameGroup").classList.toggle("hidden", !register);
-      $("fullName").required = register;
-      $("submitButton").textContent = register ? "Daftar akun" : "Masuk";
-      $("switchText").textContent = register
-        ? "Sudah punya akun?"
-        : "Belum punya akun?";
-      $("switchMode").textContent = register ? "Masuk" : "Daftar";
-      $("password").autocomplete = register ? "new-password" : "current-password";
-      hideNotice("authNotice");
-    }
-
-    function renderUser(user) {
-      const metadata = user.user_metadata || {};
-      const name = metadata.full_name || user.email || "Pengguna";
-
-      $("displayName").textContent = name;
-      $("displayEmail").textContent = user.email || "";
-      $("avatar").textContent = [...name][0].toUpperCase();
-
-      $("authSection").classList.add("hidden");
-      $("appSection").classList.remove("hidden");
-      hideNotice("appNotice");
-    }
-
-    function renderSignedOut() {
-      $("appSection").classList.add("hidden");
-      $("authSection").classList.remove("hidden");
-    }
-
-    async function initialize() {
-      if (!window.supabase) {
-        showNotice("authNotice",
-          "Pustaka Supabase gagal dimuat. Periksa koneksi internet lalu muat ulang.",
-          "error");
-        return;
+    db.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT" || !session) {
+        showSignedOut();
+      } else if (event === "SIGNED_IN") {
+        // Jalankan operasi profil setelah callback autentikasi selesai.
+        setTimeout(async () => {
+          try { await enterApp(session.user); }
+          catch (e) { notice("authNotice", "Gagal memuat profil: " + e.message, "error"); }
+        }, 0);
       }
-
-      if (
-        SUPABASE_URL === "TEMPEL_PROJECT_URL_DI_SINI" ||
-        SUPABASE_PUBLISHABLE_KEY === "TEMPEL_PUBLISHABLE_KEY_DI_SINI"
-      ) {
-        showNotice("authNotice",
-          "Konfigurasi belum diisi. Masukkan Project URL dan Publishable Key di kode.",
-          "error");
-        return;
-      }
-
-      try {
-        client = window.supabase.createClient(
-          SUPABASE_URL,
-          SUPABASE_PUBLISHABLE_KEY
-        );
-
-        const { data, error } = await client.auth.getSession();
-        if (error) throw error;
-
-        if (data.session) {
-          renderUser(data.session.user);
-        }
-
-        client.auth.onAuthStateChange((_event, session) => {
-          if (session) renderUser(session.user);
-          else renderSignedOut();
-        });
-      } catch (error) {
-        showNotice("authNotice",
-          "Gagal menghubungkan Supabase: " + error.message, "error");
-      }
-    }
-
-    $("switchMode").addEventListener("click", () => {
-      setupAuthMode(!isRegister);
     });
+  } catch (e) {
+    notice("authNotice", "Koneksi gagal: " + e.message, "error");
+  }
+}
 
-    $("authForm").addEventListener("submit", async (event) => {
-      event.preventDefault();
-      hideNotice("authNotice");
+$("switchAuth").addEventListener("click", () => {
+  setAuthMode(authMode === "login" ? "register" : "login");
+});
 
-      if (!client) {
-        showNotice("authNotice",
-          "Supabase belum siap. Periksa URL dan Publishable Key.", "error");
-        return;
+$("authForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  clearNotice("authNotice");
+  if (!db) {
+    notice("authNotice", "Supabase belum siap. Periksa konfigurasi.", "error");
+    return;
+  }
+
+  const email = $("emailInput").value.trim();
+  const password = $("passwordInput").value;
+  const username = $("usernameInput").value.trim().toLowerCase();
+  const button = $("authSubmit");
+  button.disabled = true;
+  button.textContent = "Memproses...";
+
+  try {
+    let result;
+    if (authMode === "register") {
+      if (!/^[a-z0-9_]{3,24}$/.test(username)) {
+        throw new Error("Username harus 3–24 karakter: huruf, angka, atau garis bawah.");
       }
-
-      const email = $("email").value.trim();
-      const password = $("password").value;
-      const fullName = $("fullName").value.trim();
-
-      $("submitButton").disabled = true;
-      $("submitButton").textContent = "Memproses...";
-
-      try {
-        let result;
-
-        if (isRegister) {
-          result = await client.auth.signUp({
-            email,
-            password,
-            options: {
-              data: { full_name: fullName },
-              emailRedirectTo: window.location.origin
-            }
-          });
-        } else {
-          result = await client.auth.signInWithPassword({
-            email,
-            password
-          });
+      result = await db.auth.signUp({
+        email, password,
+        options: {
+          data: {username},
+          emailRedirectTo: window.location.origin
         }
+      });
+      if (result.error) throw result.error;
 
-        if (result.error) throw result.error;
-
-        if (isRegister && !result.data.session) {
-          showNotice("authNotice",
-            "Pendaftaran berhasil. Periksa email untuk verifikasi, lalu masuk.",
-            "success");
-        } else if (result.data.user) {
-          renderUser(result.data.user);
-        }
-      } catch (error) {
-        showNotice("authNotice",
-          "Gagal: " + error.message, "error");
-      } finally {
-        $("submitButton").disabled = false;
-        $("submitButton").textContent = isRegister ? "Daftar akun" : "Masuk";
-      }
-    });
-
-    $("logoutButton").addEventListener("click", async () => {
-      if (!client) return;
-
-      const { error } = await client.auth.signOut();
-
-      if (error) {
-        showNotice("appNotice", "Gagal keluar: " + error.message, "error");
+      if (!result.data.session) {
+        notice("authNotice",
+          "Pendaftaran diterima. Periksa email untuk verifikasi, lalu masuk. Jika username sudah dipakai, pilih username lain.",
+          "success");
       } else {
-        renderSignedOut();
-        setupAuthMode(false);
+        await enterApp(result.data.user);
+        notice("chatNotice", "Akun berhasil dibuat.", "success");
       }
-    });
+    } else {
+      result = await db.auth.signInWithPassword({email, password});
+      if (result.error) throw result.error;
+      await enterApp(result.data.user);
+    }
+  } catch (e) {
+    notice("authNotice", "Tidak berhasil: " + e.message, "error");
+  } finally {
+    button.disabled = false;
+    button.textContent = authMode === "register" ? "Buat akun" : "Masuk";
+  }
+});
 
-    document.querySelectorAll("[data-page]").forEach((button) => {
-      button.addEventListener("click", () => {
-        const page = button.dataset.page;
+$("logoutButton").addEventListener("click", async () => {
+  if (!db) return;
+  const {error} = await db.auth.signOut();
+  if (error) notice("chatNotice", "Gagal keluar: " + error.message, "error");
+});
 
-        document.querySelectorAll("[data-page]").forEach((tab) => {
-          tab.classList.toggle("active", tab === button);
-        });
+function safeText(value) {
+  return String(value).replace(/[&<>"']/g, c => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+  })[c]);
+}
 
-        ["chat", "status", "calls"].forEach((name) => {
-          $(name + "Page").classList.toggle("hidden", name !== page);
-        });
+function personElement(profile, buttonLabel="Chat") {
+  const username = safeText(profile.username);
+  return `<div class="person">
+    <div class="avatar">${safeText(profile.username.slice(0,1).toUpperCase())}</div>
+    <div class="person-info">
+      <div class="person-name">@${username}</div>
+      <div class="handle">CommunityGlobal member</div>
+    </div>
+    <button class="btn btn-primary" data-open-peer="${safeText(profile.id)}"
+      data-peer-name="${username}" type="button">${buttonLabel}</button>
+  </div>`;
+}
+
+$("searchForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  clearNotice("searchNotice");
+  $("searchResults").innerHTML = "";
+  const term = $("searchInput").value.trim().toLowerCase();
+  if (!term || !db || !currentUser) return;
+  if (!/^[a-z0-9_]{1,24}$/.test(term)) {
+    notice("searchNotice", "Gunakan username, huruf kecil, angka, atau garis bawah.", "error");
+    return;
+  }
+
+  try {
+    const {data, error} = await db.from("profiles")
+      .select("id,username").ilike("username", term)
+      .limit(20);
+    if (error) throw error;
+    const others = (data || []).filter(p => p.id !== currentUser.id);
+    if (!others.length) {
+      $("searchResults").innerHTML = '<div class="empty">Username tidak ditemukan. Periksa ejaannya.</div>';
+      return;
+    }
+    $("searchResults").innerHTML = others.map(p => personElement(p, "Mulai chat")).join("");
+    attachPeerButtons();
+  } catch (e) {
+    notice("searchNotice", "Pencarian gagal: " + e.message, "error");
+  }
+});
+
+function attachPeerButtons() {
+  document.querySelectorAll("[data-open-peer]").forEach(button => {
+    button.addEventListener("click", () => {
+      openChat({
+        id:button.dataset.openPeer,
+        username:button.dataset.peerName
       });
     });
+  });
+}
 
-    setupAuthMode(false);
-    initialize();
-  </script>
+async function loadChatList() {
+  if (!currentUser || !db) return;
+  try {
+    const {data, error} = await db.from("direct_messages")
+      .select("sender_id,receiver_id,created_at")
+      .or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`)
+      .order("created_at", {ascending:false}).limit(200);
+    if (error) throw error;
+
+    const ids = [...new Set((data || []).map(m =>
+      m.sender_id === currentUser.id ? m.receiver_id : m.sender_id
+    ))];
+
+    if (!ids.length) {
+      $("chatList").innerHTML = '<div class="empty">Belum ada percakapan.</div>';
+      return;
+    }
+
+    const profiles = await db.from("profiles").select("id,username").in("id", ids);
+    if (profiles.error) throw profiles.error;
+    const map = new Map(profiles.data.map(p => [p.id,p]));
+    const peers = ids.map(id => map.get(id)).filter(Boolean);
+    $("chatList").innerHTML = peers.map(p =>
+      `<button class="chat-entry" data-chat-id="${safeText(p.id)}" type="button">
+        <div class="avatar">${safeText(p.username[0].toUpperCase())}</div>
+        <div class="person-info"><div class="person-name">@${safeText(p.username)}</div><div class="handle">Buka percakapan</div></div>
+      </button>`
+    ).join("");
+    document.querySelectorAll("[data-chat-id]").forEach(button => {
+      button.addEventListener("click", () => {
+        const peer = peers.find(p => p.id === button.dataset.chatId);
+        if (peer) openChat(peer);
+      });
+    });
+  } catch (e) {
+    notice("chatNotice", "Tidak bisa memuat daftar chat: " + e.message, "error");
+  }
+}
+
+async function openChat(peer) {
+  if (!currentUser || !db || peer.id === currentUser.id) return;
+  activePeer = peer;
+  document.querySelectorAll(".chat-entry").forEach(el => {
+    el.classList.toggle("active", el.dataset.chatId === peer.id);
+  });
+
+  $("chatWindow").innerHTML = `
+    <div class="chat-head">
+      <div class="person-name">@${safeText(peer.username)}</div>
+      <div class="handle">Percakapan pribadi</div>
+    </div>
+    <div id="messages" class="messages"><div class="empty">Memuat pesan...</div></div>
+    <form id="messageForm" class="composer">
+      <input id="messageInput" class="input" maxlength="4000"
+        placeholder="Tulis pesan..." autocomplete="off" required>
+      <button class="btn btn-primary" type="submit">Kirim</button>
+    </form>`;
+
+  $("messageForm").addEventListener("submit", sendMessage);
+  await loadMessages();
+  if (refreshTimer) clearInterval(refreshTimer);
+  refreshTimer = setInterval(() => {
+    if (activePeer && activePeer.id === peer.id) loadMessages();
+  }, 5000);
+}
+
+async function loadMessages() {
+  if (!currentUser || !activePeer || !db) return;
+  const peer = activePeer;
+  try {
+    const {data, error} = await db.from("direct_messages")
+      .select("id,sender_id,receiver_id,content,created_at")
+      .or(
+        `and(sender_id.eq.${currentUser.id},receiver_id.eq.${peer.id}),and(sender_id.eq.${peer.id},receiver_id.eq.${currentUser.id})`
+      )
+      .order("created_at", {ascending:true}).limit(200);
+    if (error) throw error;
+    if (!activePeer || activePeer.id !== peer.id) return;
+
+    const container = $("messages");
+    const atBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 70;
+    if (!data.length) {
+      container.innerHTML = '<div class="empty">Belum ada pesan. Mulai percakapan di sini.</div>';
+      return;
+    }
+
+    container.innerHTML = data.map(m => {
+      const mine = m.sender_id === currentUser.id;
+      const time = new Date(m.created_at).toLocaleString("id-ID", {
+        hour:"2-digit", minute:"2-digit"
+      });
+      return `<div class="bubble ${mine ? "mine" : ""}">${safeText(m.content)}<span class="time">${time}</span></div>`;
+    }).join("");
+    if (atBottom) container.scrollTop = container.scrollHeight;
+  } catch (e) {
+    notice("chatNotice", "Gagal memuat pesan: " + e.message, "error");
+  }
+}
+
+async function sendMessage(event) {
+  event.preventDefault();
+  if (!currentUser || !activePeer || !db) return;
+  const input = $("messageInput");
+  const content = input.value.trim();
+  if (!content) return;
+
+  const button = event.submitter;
+  if (button) button.disabled = true;
+  try {
+    const {error} = await db.from("direct_messages").insert({
+      sender_id:currentUser.id,
+      receiver_id:activePeer.id,
+      content
+    });
+    if (error) throw error;
+    input.value = "";
+    await loadMessages();
+    await loadChatList();
+  } catch (e) {
+    notice("chatNotice", "Pesan gagal dikirim: " + e.message, "error");
+  } finally {
+    if (button) button.disabled = false;
+    input.focus();
+  }
+}
+
+makeNav();
+setAuthMode("login");
+initialize();
+</script>
 </body>
 </html>
