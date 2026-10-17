@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101810">
+<title>CommunityGlobal</title>
+<style>
+:root {
+  --bg:#101810; --panel:#19231c; --card:#202d24;
+  --green:#9dfc83; --text:#f3f7f0; --muted:#a0afa2;
+  --line:#354438; --pink:#ffc0d8;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+font:15px system-ui,-apple-system,sans-serif}
+button,input{font:inherit}
+button{cursor:pointer}
+header{padding:19px 18px 12px;position:sticky;top:0;
+background:var(--bg);z-index:2;border-bottom:1px solid var(--line)}
+.brand{font-size:24px;font-weight:850;letter-spacing:-1px}
+.brand span{color:var(--green)}
+.subtitle{color:var(--muted);margin-top:4px}
+main{padding:18px;max-width:750px;margin:auto;padding-bottom:100px}
+.page{display:none}.page.active{display:block}
+h2{font-size:22px;margin:8px 0 18px}
+.panel{background:var(--panel);border:1px solid var(--line);
+border-radius:17px;padding:16px;margin-bottom:12px}
+.item{display:flex;align-items:center;gap:12px;padding:12px 0;
+border-bottom:1px solid var(--line)}
+.item:last-child{border:0}
+.avatar{width:48px;height:48px;flex-shrink:0;border-radius:16px;
+display:grid;place-items:center;background:var(--green);
+color:#152315;font-size:20px;font-weight:800}
+.muted{color:var(--muted);font-size:13px}
+.btn{border:1px solid var(--green);background:var(--green);
+color:#142014;border-radius:12px;padding:11px 15px;font-weight:750}
+.btn.secondary{background:transparent;color:var(--text);
+border-color:var(--line)}
+input{width:100%;padding:12px;border-radius:11px;
+background:var(--bg);border:1px solid var(--line);
+color:var(--text);margin:7px 0 12px;outline:none}
+input:focus{border-color:var(--green)}
+nav{position:fixed;bottom:0;left:0;right:0;z-index:5;
+background:var(--panel);border-top:1px solid var(--line);
+display:grid;grid-template-columns:repeat(5,1fr);
+padding:9px 4px max(9px,env(safe-area-inset-bottom))}
+nav button{background:none;border:0;color:var(--muted);
+font-size:11px;padding:5px 0}
+nav button b{display:block;font-size:22px;margin-bottom:3px}
+nav button.active{color:var(--green)}
+.storyrow{display:flex;gap:13px;overflow-x:auto;padding:5px 0 18px}
+.story{min-width:72px;text-align:center;font-size:12px}
+.ring{width:62px;height:62px;border:2px solid var(--green);
+border-radius:22px;padding:4px;margin:auto auto 6px}
+.ring div{height:100%;display:grid;place-items:center;
+background:var(--card);border-radius:16px;font-size:21px}
+.chatbox{display:flex;gap:8px;margin-top:12px}
+.chatbox input{margin:0;min-width:0}
+.message{padding:10px 12px;border-radius:14px;
+background:var(--card);margin:9px 0;max-width:88%;
+overflow-wrap:anywhere}
+.message.mine{margin-left:auto;background:#294c32}
+#messages{min-height:130px;max-height:45vh;overflow:auto}
+.notice{background:#293529;border-radius:12px;padding:12px;
+color:var(--muted);font-size:13px;line-height:1.6}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">Community<span>Global</span> ✳</div>
+  <div class="subtitle">Connect with your community.</div>
+</header>
+<main>
+<section id="chats" class="page active">
+  <h2>Chat</h2>
+  <div class="panel">
+    <div style="font-weight:750">Pesan</div>
+    <p class="muted">Selamat datang di CommunityGlobal!</p>
+    <div id="messages">
+      <div class="message">Halo! 👋 Ini ruang chat demo kamu.</div>
+    </div>
+    <div class="chatbox">
+      <input id="msg" placeholder="Tulis pesan..." maxlength="2000">
+      <button class="btn" onclick="sendMessage()">Kirim</button>
+    </div>
+  </div>
+  <div class="notice">Versi demo: pesan tersimpan di browser ini.
+  Chat antar pengguna memerlukan backend dan login.</div>
+</section>
+
+<section id="statuses" class="page">
+  <h2>Pembaruan</h2>
+  <div class="storyrow">
+    <div class="story" onclick="document.getElementById('statusText').focus()">
+      <div class="ring"><div>＋</div></div>Buat status
+    </div>
+    <div id="storyList" style="display:flex;gap:13px"></div>
+  </div>
+  <div class="panel">
+    <h3>Bagikan pembaruan</h3>
+    <input id="statusText" placeholder="Apa yang ingin kamu bagikan?">
+    <input id="statusFile" type="file" accept="image/*,video/*">
+    <button class="btn" onclick="addStatus()">Bagikan status</button>
+  </div>
+</section>
+
+<section id="communities" class="page">
+  <h2>Komunitas</h2>
+  <div class="panel" style="text-align:center;padding:30px 18px">
+    <div style="font-size:54px">♧</div>
+    <h3>Tetap terhubung dengan komunitas</h3>
+    <p class="muted">Gabungkan orang-orang berdasarkan minat.</p>
+    <input id="communityName" placeholder="Nama komunitas baru">
+    <button class="btn" onclick="addCommunity()">＋ Buat komunitas</button>
+  </div>
+  <div id="communityList"></div>
+</section>
+
+<section id="calls" class="page">
+  <h2>Panggilan</h2>
+  <div class="panel">
+    <div class="avatar">↗</div>
+    <h3>Hubungi teman</h3>
+    <p class="muted">Riwayat panggilan akan muncul di sini.</p>
+    <div class="notice">Panggilan suara dan video memerlukan
+    backend signaling serta koneksi WebRTC. Belum aktif pada demo ini.</div>
+  </div>
+</section>
+
+<section id="settings" class="page">
+  <h2>Profil & Pengaturan</h2>
+  <div class="panel">
+    <div class="avatar">CG</div>
+    <h3>Profil saya</h3>
+    <label>Nama tampilan</label>
+    <input id="profileName" placeholder="Nama kamu">
+    <label>Deskripsi</label>
+    <input id="profileBio" placeholder="Ceritakan tentang dirimu">
+    <button class="btn" onclick="saveProfile()">Simpan profil</button>
+  </div>
+  <div class="panel">
+    <h3>Pengaturan</h3>
+    <p>🎨 Tema Neo-brutalism</p>
+    <p>🔔 Notifikasi</p>
+    <p>🔒 Privasi & keamanan</p>
+    <p>🆘 Bantuan & layanan pelanggan</p>
+    <p class="muted">Pengaturan lanjutan akan dihubungkan ke backend.</p>
+  </div>
+</section>
+</main>
+
+<nav>
+  <button class="active" data-page="chats"><b>▤</b>Chat</button>
+  <button data-page="statuses"><b>◉</b>Status</button>
+  <button data-page="communities"><b>♧</b>Komunitas</button>
+  <button data-page="calls"><b>♧</b>Panggilan</button>
+  <button data-page="settings"><b>⚙</b>Setelan</button>
+</nav>
+
+<script>
+document.querySelectorAll('nav button').forEach(button=>{
+  button.addEventListener('click',()=>{
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+    document.getElementById(button.dataset.page).classList.add('active');
+    button.classList.add('active');
+  });
+});
+
+function sendMessage(){
+  const input=document.getElementById('msg');
+  const value=input.value.trim();
+  if(!value)return;
+  const div=document.createElement('div');
+  div.className='message mine';
+  div.textContent=value+'  ✓';
+  document.getElementById('messages').appendChild(div);
+  input.value='';
+  document.getElementById('messages').scrollTop=999999;
+}
+document.getElementById('msg').addEventListener('keydown',e=>{
+  if(e.key==='Enter')sendMessage();
+});
+
+function addStatus(){
+  const text=document.getElementById('statusText').value.trim();
+  const file=document.getElementById('statusFile').files[0];
+  if(!text&&!file){alert('Isi teks atau pilih foto/video.');return}
+  const el=document.createElement('div');
+  el.className='story';
+  const ring=document.createElement('div');
+  ring.className='ring';
+  const inner=document.createElement('div');
+  if(file&&file.type.startsWith('image/')){
+    const img=document.createElement('img');
+    img.src=URL.createObjectURL(file);
+    img.style.cssText='width:100%;height:100%;object-fit:cover;border-radius:14px';
+    inner.appendChild(img);
+  }else inner.textContent=file?'▶':'✳';
+  ring.appendChild(inner);
+  el.append(ring);
+  const label=document.createElement('div');
+  label.textContent=text||file.name;
+  el.appendChild(label);
+  document.getElementById('storyList').appendChild(el);
+  document.getElementById('statusText').value='';
+  document.getElementById('statusFile').value='';
+}
+
+function addCommunity(){
+  const input=document.getElementById('communityName');
+  const name=input.value.trim();
+  if(!name)return;
+  const card=document.createElement('div');
+  card.className='panel';
+  card.textContent='♧  '+name;
+  document.getElementById('communityList').appendChild(card);
+  input.value='';
+}
+
+function saveProfile(){
+  localStorage.setItem('cgName',document.getElementById('profileName').value);
+  localStorage.setItem('cgBio',document.getElementById('profileBio').value);
+  alert('Profil demo tersimpan di browser.');
+}
+document.getElementById('profileName').value=localStorage.getItem('cgName')||'';
+document.getElementById('profileBio').value=localStorage.getItem('cgBio')||'';
+</script>
+</body>
+</html>
