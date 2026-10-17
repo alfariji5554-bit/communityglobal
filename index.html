@@ -2,231 +2,524 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#101810">
-<title>CommunityGlobal</title>
-<style>
-:root {
-  --bg:#101810; --panel:#19231c; --card:#202d24;
-  --green:#9dfc83; --text:#f3f7f0; --muted:#a0afa2;
-  --line:#354438; --pink:#ffc0d8;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);
-font:15px system-ui,-apple-system,sans-serif}
-button,input{font:inherit}
-button{cursor:pointer}
-header{padding:19px 18px 12px;position:sticky;top:0;
-background:var(--bg);z-index:2;border-bottom:1px solid var(--line)}
-.brand{font-size:24px;font-weight:850;letter-spacing:-1px}
-.brand span{color:var(--green)}
-.subtitle{color:var(--muted);margin-top:4px}
-main{padding:18px;max-width:750px;margin:auto;padding-bottom:100px}
-.page{display:none}.page.active{display:block}
-h2{font-size:22px;margin:8px 0 18px}
-.panel{background:var(--panel);border:1px solid var(--line);
-border-radius:17px;padding:16px;margin-bottom:12px}
-.item{display:flex;align-items:center;gap:12px;padding:12px 0;
-border-bottom:1px solid var(--line)}
-.item:last-child{border:0}
-.avatar{width:48px;height:48px;flex-shrink:0;border-radius:16px;
-display:grid;place-items:center;background:var(--green);
-color:#152315;font-size:20px;font-weight:800}
-.muted{color:var(--muted);font-size:13px}
-.btn{border:1px solid var(--green);background:var(--green);
-color:#142014;border-radius:12px;padding:11px 15px;font-weight:750}
-.btn.secondary{background:transparent;color:var(--text);
-border-color:var(--line)}
-input{width:100%;padding:12px;border-radius:11px;
-background:var(--bg);border:1px solid var(--line);
-color:var(--text);margin:7px 0 12px;outline:none}
-input:focus{border-color:var(--green)}
-nav{position:fixed;bottom:0;left:0;right:0;z-index:5;
-background:var(--panel);border-top:1px solid var(--line);
-display:grid;grid-template-columns:repeat(5,1fr);
-padding:9px 4px max(9px,env(safe-area-inset-bottom))}
-nav button{background:none;border:0;color:var(--muted);
-font-size:11px;padding:5px 0}
-nav button b{display:block;font-size:22px;margin-bottom:3px}
-nav button.active{color:var(--green)}
-.storyrow{display:flex;gap:13px;overflow-x:auto;padding:5px 0 18px}
-.story{min-width:72px;text-align:center;font-size:12px}
-.ring{width:62px;height:62px;border:2px solid var(--green);
-border-radius:22px;padding:4px;margin:auto auto 6px}
-.ring div{height:100%;display:grid;place-items:center;
-background:var(--card);border-radius:16px;font-size:21px}
-.chatbox{display:flex;gap:8px;margin-top:12px}
-.chatbox input{margin:0;min-width:0}
-.message{padding:10px 12px;border-radius:14px;
-background:var(--card);margin:9px 0;max-width:88%;
-overflow-wrap:anywhere}
-.message.mine{margin-left:auto;background:#294c32}
-#messages{min-height:130px;max-height:45vh;overflow:auto}
-.notice{background:#293529;border-radius:12px;padding:12px;
-color:var(--muted);font-size:13px;line-height:1.6}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101b2d">
+  <title>CommunityGlobal</title>
+
+  <style>
+    :root {
+      --bg: #101b2d;
+      --panel: #19283e;
+      --panel2: #223650;
+      --accent: #73f5c5;
+      --text: #f4f7ff;
+      --muted: #aab8cd;
+      --border: #344762;
+      --danger: #ff8c9a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, sans-serif;
+      min-height: 100vh;
+    }
+
+    button, input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .hidden { display: none !important; }
+
+    .shell {
+      width: min(100%, 520px);
+      margin: auto;
+      min-height: 100vh;
+      background: var(--bg);
+      border-inline: 1px solid var(--border);
+    }
+
+    header {
+      background: var(--panel);
+      padding: 20px;
+      border-bottom: 2px solid var(--accent);
+    }
+
+    .brand {
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -.8px;
+    }
+
+    .brand span { color: var(--accent); }
+
+    .sub {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    main { padding: 20px; }
+
+    .card {
+      background: var(--panel);
+      border: 2px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 5px 5px 0 #070d17;
+      margin-bottom: 18px;
+    }
+
+    h1, h2, p { margin-top: 0; }
+
+    h1 { font-size: 25px; }
+    h2 { font-size: 19px; }
+
+    .muted {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      margin: 14px 0 6px;
+      color: var(--muted);
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      background: #0e1929;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: white;
+      outline-color: var(--accent);
+    }
+
+    .primary, .secondary, .tab {
+      padding: 12px 15px;
+      border-radius: 10px;
+      font-weight: 750;
+    }
+
+    .primary {
+      width: 100%;
+      margin-top: 16px;
+      background: var(--accent);
+      color: #10251f;
+      border: 2px solid #10251f;
+      box-shadow: 3px 3px 0 #070d17;
+    }
+
+    .secondary {
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .switch {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .link {
+      border: 0;
+      background: none;
+      color: var(--accent);
+      font-weight: bold;
+      padding: 4px;
+    }
+
+    .notice {
+      padding: 12px;
+      margin-top: 14px;
+      border-radius: 10px;
+      background: var(--panel2);
+      font-size: 14px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .notice.error { color: var(--danger); }
+    .notice.success { color: var(--accent); }
+
+    .user-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 45px;
+      height: 45px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      background: var(--accent);
+      color: #10251f;
+      border-radius: 14px;
+      font-weight: 900;
+      font-size: 20px;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .profile-name { font-weight: 800; overflow-wrap: anywhere; }
+
+    .badge {
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 18px 0;
+    }
+
+    .tab {
+      background: var(--panel);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .tab.active {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .empty {
+      text-align: center;
+      padding: 35px 12px;
+    }
+
+    .empty-icon { font-size: 40px; margin-bottom: 12px; }
+
+    footer {
+      padding: 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+  </style>
 </head>
+
 <body>
-<header>
-  <div class="brand">Community<span>Global</span> ✳</div>
-  <div class="subtitle">Connect with your community.</div>
-</header>
-<main>
-<section id="chats" class="page active">
-  <h2>Chat</h2>
-  <div class="panel">
-    <div style="font-weight:750">Pesan</div>
-    <p class="muted">Selamat datang di CommunityGlobal!</p>
-    <div id="messages">
-      <div class="message">Halo! 👋 Ini ruang chat demo kamu.</div>
-    </div>
-    <div class="chatbox">
-      <input id="msg" placeholder="Tulis pesan..." maxlength="2000">
-      <button class="btn" onclick="sendMessage()">Kirim</button>
-    </div>
+  <div class="shell">
+    <header>
+      <div class="brand">Community<span>Global</span></div>
+      <div class="sub">Connect your world.</div>
+    </header>
+
+    <main>
+      <section id="authSection">
+        <div class="card">
+          <h1 id="authTitle">Selamat datang 👋</h1>
+          <p class="muted" id="authDescription">
+            Masuk untuk melanjutkan ke CommunityGlobal.
+          </p>
+
+          <form id="authForm">
+            <div id="nameGroup" class="hidden">
+              <label for="fullName">Nama tampilan</label>
+              <input id="fullName" maxlength="60"
+                     autocomplete="name" placeholder="Nama kamu">
+            </div>
+
+            <label for="email">Email</label>
+            <input id="email" type="email" required
+                   autocomplete="email" placeholder="nama@email.com">
+
+            <label for="password">Password</label>
+            <input id="password" type="password" required
+                   minlength="6" autocomplete="current-password"
+                   placeholder="Minimal 6 karakter">
+
+            <button id="submitButton" class="primary" type="submit">
+              Masuk
+            </button>
+          </form>
+
+          <div id="authNotice" class="notice hidden"
+               role="status" aria-live="polite"></div>
+
+          <div class="switch">
+            <span id="switchText">Belum punya akun?</span>
+            <button id="switchMode" class="link" type="button">
+              Daftar
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section id="appSection" class="hidden">
+        <div class="card">
+          <div class="user-row">
+            <div class="profile">
+              <div class="avatar" id="avatar">C</div>
+              <div>
+                <div class="profile-name" id="displayName">Pengguna</div>
+                <div class="sub" id="displayEmail"></div>
+                <div class="badge">● Akun CommunityGlobal</div>
+              </div>
+            </div>
+            <button class="secondary" id="logoutButton" type="button">
+              Keluar
+            </button>
+          </div>
+        </div>
+
+        <div class="tabs">
+          <button class="tab active" data-page="chat" type="button">Chat</button>
+          <button class="tab" data-page="status" type="button">Status</button>
+          <button class="tab" data-page="calls" type="button">Panggilan</button>
+        </div>
+
+        <div class="card">
+          <div id="chatPage">
+            <div class="empty">
+              <div class="empty-icon">💬</div>
+              <h2>Pesan kamu</h2>
+              <p class="muted">
+                Akun berhasil masuk. Fitur percakapan akan dihubungkan
+                ke database pada tahap berikutnya.
+              </p>
+            </div>
+          </div>
+
+          <div id="statusPage" class="hidden">
+            <div class="empty">
+              <div class="empty-icon">⭕</div>
+              <h2>Status</h2>
+              <p class="muted">Fitur status belum diaktifkan.</p>
+            </div>
+          </div>
+
+          <div id="callsPage" class="hidden">
+            <div class="empty">
+              <div class="empty-icon">📞</div>
+              <h2>Panggilan</h2>
+              <p class="muted">Fitur panggilan belum diaktifkan.</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="appNotice" class="notice hidden"
+             role="status" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <footer>CommunityGlobal · Made for community</footer>
   </div>
-  <div class="notice">Versi demo: pesan tersimpan di browser ini.
-  Chat antar pengguna memerlukan backend dan login.</div>
-</section>
 
-<section id="statuses" class="page">
-  <h2>Pembaruan</h2>
-  <div class="storyrow">
-    <div class="story" onclick="document.getElementById('statusText').focus()">
-      <div class="ring"><div>＋</div></div>Buat status
-    </div>
-    <div id="storyList" style="display:flex;gap:13px"></div>
-  </div>
-  <div class="panel">
-    <h3>Bagikan pembaruan</h3>
-    <input id="statusText" placeholder="Apa yang ingin kamu bagikan?">
-    <input id="statusFile" type="file" accept="image/*,video/*">
-    <button class="btn" onclick="addStatus()">Bagikan status</button>
-  </div>
-</section>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    /*
+      GANTI DUA NILAI DI BAWAH DENGAN DATA PROJECT SUPABASE KAMU.
+      Gunakan Project URL dan Publishable Key, bukan secret key.
+    */
+    const SUPABASE_URL = "https://pyxmmclihlsoywctbrno.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Z7bHHgRe5Eld4rxjKYOVHg_uNjKU909";
 
-<section id="communities" class="page">
-  <h2>Komunitas</h2>
-  <div class="panel" style="text-align:center;padding:30px 18px">
-    <div style="font-size:54px">♧</div>
-    <h3>Tetap terhubung dengan komunitas</h3>
-    <p class="muted">Gabungkan orang-orang berdasarkan minat.</p>
-    <input id="communityName" placeholder="Nama komunitas baru">
-    <button class="btn" onclick="addCommunity()">＋ Buat komunitas</button>
-  </div>
-  <div id="communityList"></div>
-</section>
+    const $ = (id) => document.getElementById(id);
 
-<section id="calls" class="page">
-  <h2>Panggilan</h2>
-  <div class="panel">
-    <div class="avatar">↗</div>
-    <h3>Hubungi teman</h3>
-    <p class="muted">Riwayat panggilan akan muncul di sini.</p>
-    <div class="notice">Panggilan suara dan video memerlukan
-    backend signaling serta koneksi WebRTC. Belum aktif pada demo ini.</div>
-  </div>
-</section>
+    let client = null;
+    let isRegister = false;
 
-<section id="settings" class="page">
-  <h2>Profil & Pengaturan</h2>
-  <div class="panel">
-    <div class="avatar">CG</div>
-    <h3>Profil saya</h3>
-    <label>Nama tampilan</label>
-    <input id="profileName" placeholder="Nama kamu">
-    <label>Deskripsi</label>
-    <input id="profileBio" placeholder="Ceritakan tentang dirimu">
-    <button class="btn" onclick="saveProfile()">Simpan profil</button>
-  </div>
-  <div class="panel">
-    <h3>Pengaturan</h3>
-    <p>🎨 Tema Neo-brutalism</p>
-    <p>🔔 Notifikasi</p>
-    <p>🔒 Privasi & keamanan</p>
-    <p>🆘 Bantuan & layanan pelanggan</p>
-    <p class="muted">Pengaturan lanjutan akan dihubungkan ke backend.</p>
-  </div>
-</section>
-</main>
+    function showNotice(id, message, type = "") {
+      const el = $(id);
+      el.textContent = message;
+      el.className = "notice" + (type ? " " + type : "");
+      el.classList.remove("hidden");
+    }
 
-<nav>
-  <button class="active" data-page="chats"><b>▤</b>Chat</button>
-  <button data-page="statuses"><b>◉</b>Status</button>
-  <button data-page="communities"><b>♧</b>Komunitas</button>
-  <button data-page="calls"><b>♧</b>Panggilan</button>
-  <button data-page="settings"><b>⚙</b>Setelan</button>
-</nav>
+    function hideNotice(id) {
+      $(id).classList.add("hidden");
+    }
 
-<script>
-document.querySelectorAll('nav button').forEach(button=>{
-  button.addEventListener('click',()=>{
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-    document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
-    document.getElementById(button.dataset.page).classList.add('active');
-    button.classList.add('active');
-  });
-});
+    function setupAuthMode(register) {
+      isRegister = register;
+      $("authTitle").textContent = register ? "Buat akun ✨" : "Selamat datang 👋";
+      $("authDescription").textContent = register
+        ? "Daftar menggunakan email dan password."
+        : "Masuk untuk melanjutkan ke CommunityGlobal.";
+      $("nameGroup").classList.toggle("hidden", !register);
+      $("fullName").required = register;
+      $("submitButton").textContent = register ? "Daftar akun" : "Masuk";
+      $("switchText").textContent = register
+        ? "Sudah punya akun?"
+        : "Belum punya akun?";
+      $("switchMode").textContent = register ? "Masuk" : "Daftar";
+      $("password").autocomplete = register ? "new-password" : "current-password";
+      hideNotice("authNotice");
+    }
 
-function sendMessage(){
-  const input=document.getElementById('msg');
-  const value=input.value.trim();
-  if(!value)return;
-  const div=document.createElement('div');
-  div.className='message mine';
-  div.textContent=value+'  ✓';
-  document.getElementById('messages').appendChild(div);
-  input.value='';
-  document.getElementById('messages').scrollTop=999999;
-}
-document.getElementById('msg').addEventListener('keydown',e=>{
-  if(e.key==='Enter')sendMessage();
-});
+    function renderUser(user) {
+      const metadata = user.user_metadata || {};
+      const name = metadata.full_name || user.email || "Pengguna";
 
-function addStatus(){
-  const text=document.getElementById('statusText').value.trim();
-  const file=document.getElementById('statusFile').files[0];
-  if(!text&&!file){alert('Isi teks atau pilih foto/video.');return}
-  const el=document.createElement('div');
-  el.className='story';
-  const ring=document.createElement('div');
-  ring.className='ring';
-  const inner=document.createElement('div');
-  if(file&&file.type.startsWith('image/')){
-    const img=document.createElement('img');
-    img.src=URL.createObjectURL(file);
-    img.style.cssText='width:100%;height:100%;object-fit:cover;border-radius:14px';
-    inner.appendChild(img);
-  }else inner.textContent=file?'▶':'✳';
-  ring.appendChild(inner);
-  el.append(ring);
-  const label=document.createElement('div');
-  label.textContent=text||file.name;
-  el.appendChild(label);
-  document.getElementById('storyList').appendChild(el);
-  document.getElementById('statusText').value='';
-  document.getElementById('statusFile').value='';
-}
+      $("displayName").textContent = name;
+      $("displayEmail").textContent = user.email || "";
+      $("avatar").textContent = [...name][0].toUpperCase();
 
-function addCommunity(){
-  const input=document.getElementById('communityName');
-  const name=input.value.trim();
-  if(!name)return;
-  const card=document.createElement('div');
-  card.className='panel';
-  card.textContent='♧  '+name;
-  document.getElementById('communityList').appendChild(card);
-  input.value='';
-}
+      $("authSection").classList.add("hidden");
+      $("appSection").classList.remove("hidden");
+      hideNotice("appNotice");
+    }
 
-function saveProfile(){
-  localStorage.setItem('cgName',document.getElementById('profileName').value);
-  localStorage.setItem('cgBio',document.getElementById('profileBio').value);
-  alert('Profil demo tersimpan di browser.');
-}
-document.getElementById('profileName').value=localStorage.getItem('cgName')||'';
-document.getElementById('profileBio').value=localStorage.getItem('cgBio')||'';
-</script>
+    function renderSignedOut() {
+      $("appSection").classList.add("hidden");
+      $("authSection").classList.remove("hidden");
+    }
+
+    async function initialize() {
+      if (!window.supabase) {
+        showNotice("authNotice",
+          "Pustaka Supabase gagal dimuat. Periksa koneksi internet lalu muat ulang.",
+          "error");
+        return;
+      }
+
+      if (
+        SUPABASE_URL === "TEMPEL_PROJECT_URL_DI_SINI" ||
+        SUPABASE_PUBLISHABLE_KEY === "TEMPEL_PUBLISHABLE_KEY_DI_SINI"
+      ) {
+        showNotice("authNotice",
+          "Konfigurasi belum diisi. Masukkan Project URL dan Publishable Key di kode.",
+          "error");
+        return;
+      }
+
+      try {
+        client = window.supabase.createClient(
+          SUPABASE_URL,
+          SUPABASE_PUBLISHABLE_KEY
+        );
+
+        const { data, error } = await client.auth.getSession();
+        if (error) throw error;
+
+        if (data.session) {
+          renderUser(data.session.user);
+        }
+
+        client.auth.onAuthStateChange((_event, session) => {
+          if (session) renderUser(session.user);
+          else renderSignedOut();
+        });
+      } catch (error) {
+        showNotice("authNotice",
+          "Gagal menghubungkan Supabase: " + error.message, "error");
+      }
+    }
+
+    $("switchMode").addEventListener("click", () => {
+      setupAuthMode(!isRegister);
+    });
+
+    $("authForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      hideNotice("authNotice");
+
+      if (!client) {
+        showNotice("authNotice",
+          "Supabase belum siap. Periksa URL dan Publishable Key.", "error");
+        return;
+      }
+
+      const email = $("email").value.trim();
+      const password = $("password").value;
+      const fullName = $("fullName").value.trim();
+
+      $("submitButton").disabled = true;
+      $("submitButton").textContent = "Memproses...";
+
+      try {
+        let result;
+
+        if (isRegister) {
+          result = await client.auth.signUp({
+            email,
+            password,
+            options: {
+              data: { full_name: fullName },
+              emailRedirectTo: window.location.origin
+            }
+          });
+        } else {
+          result = await client.auth.signInWithPassword({
+            email,
+            password
+          });
+        }
+
+        if (result.error) throw result.error;
+
+        if (isRegister && !result.data.session) {
+          showNotice("authNotice",
+            "Pendaftaran berhasil. Periksa email untuk verifikasi, lalu masuk.",
+            "success");
+        } else if (result.data.user) {
+          renderUser(result.data.user);
+        }
+      } catch (error) {
+        showNotice("authNotice",
+          "Gagal: " + error.message, "error");
+      } finally {
+        $("submitButton").disabled = false;
+        $("submitButton").textContent = isRegister ? "Daftar akun" : "Masuk";
+      }
+    });
+
+    $("logoutButton").addEventListener("click", async () => {
+      if (!client) return;
+
+      const { error } = await client.auth.signOut();
+
+      if (error) {
+        showNotice("appNotice", "Gagal keluar: " + error.message, "error");
+      } else {
+        renderSignedOut();
+        setupAuthMode(false);
+      }
+    });
+
+    document.querySelectorAll("[data-page]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const page = button.dataset.page;
+
+        document.querySelectorAll("[data-page]").forEach((tab) => {
+          tab.classList.toggle("active", tab === button);
+        });
+
+        ["chat", "status", "calls"].forEach((name) => {
+          $(name + "Page").classList.toggle("hidden", name !== page);
+        });
+      });
+    });
+
+    setupAuthMode(false);
+    initialize();
+  </script>
 </body>
 </html>
