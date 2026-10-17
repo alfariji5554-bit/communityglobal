@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="id">
 <head>
@@ -138,7 +137,11 @@ button:focus-visible,input:focus-visible {
   border-radius:14px; text-align:center; color:var(--muted);
   font-size:14px; line-height:1.6
 }
-.chat-layout { display:grid; grid-template-columns:minmax(180px,.75fr) minmax(0,1.5fr); gap:15px }
+.chat-layout {
+  display:grid;
+  grid-template-columns:minmax(180px,.75fr) minmax(0,1.5fr);
+  gap:15px
+}
 .chat-list { display:grid; align-content:start; gap:8px }
 .chat-entry {
   display:flex; align-items:center; gap:9px; width:100%;
@@ -152,24 +155,155 @@ button:focus-visible,input:focus-visible {
   border:1.5px solid var(--line); border-radius:14px; overflow:hidden;
   min-height:390px; background:#faf8f2
 }
-.chat-head { padding:13px; border-bottom:1.5px solid var(--line); background:#fff }
-.messages { flex:1; display:flex; flex-direction:column; gap:9px; padding:14px; overflow:auto; max-height:420px }
+.chat-head {
+  padding:13px;
+  border-bottom:1.5px solid var(--line);
+  background:#fff
+}
+.messages {
+  flex:1; display:flex; flex-direction:column; gap:9px;
+  padding:14px; overflow:auto; max-height:420px
+}
 .bubble {
-  max-width:85%; padding:10px 12px; border:1.5px solid var(--line);
+  max-width:85%; padding:10px 12px;
+  border:1.5px solid var(--line);
   border-radius:12px; background:white; align-self:flex-start;
-  overflow-wrap:anywhere; white-space:pre-wrap; font-size:14px; line-height:1.5
+  overflow-wrap:anywhere; white-space:pre-wrap;
+  font-size:14px; line-height:1.5
 }
 .bubble.mine { align-self:flex-end; background:var(--lime) }
 .time { display:block; font-size:10px; color:var(--muted); margin-top:5px }
-.composer { display:flex; gap:8px; padding:10px; border-top:1.5px solid var(--line); background:white }
+.composer {
+  display:flex; gap:8px; padding:10px;
+  border-top:1.5px solid var(--line); background:white
+}
 .composer .input { padding:11px }
 .profile-box { display:flex; align-items:center; gap:14px; margin-bottom:15px }
 .profile-box .avatar { width:58px; height:58px; font-size:24px }
-.setting-row { display:flex; align-items:center; justify-content:space-between; gap:15px; padding:15px 0; border-top:1px solid #dedacf }
+.setting-row {
+  display:flex; align-items:center; justify-content:space-between;
+  gap:15px; padding:15px 0; border-top:1px solid #dedacf
+}
 .setting-row strong { display:block; font-size:14px }
-.setting-row small { color:var(--muted); display:block; margin-top:4px; overflow-wrap:anywhere }
+.setting-row small {
+  color:var(--muted); display:block; margin-top:4px; overflow-wrap:anywhere
+}
 footer { text-align:center; color:var(--muted); font-size:12px; padding:24px 0 6px }
 .mobile-nav { display:none }
+
+/* Tampilan fullscreen chat dengan tema asli */
+body.chat-fullscreen {
+  overflow:hidden;
+}
+
+body.chat-fullscreen .app {
+  max-width:none;
+  width:100%;
+  height:100dvh;
+  min-height:0;
+  padding:0;
+}
+
+body.chat-fullscreen .topbar,
+body.chat-fullscreen .sidebar,
+body.chat-fullscreen .page-head,
+body.chat-fullscreen #page-chat > .card:first-child,
+body.chat-fullscreen footer,
+body.chat-fullscreen .mobile-nav {
+  display:none !important;
+}
+
+body.chat-fullscreen #mainScreen {
+  display:block;
+  height:100dvh;
+  min-height:0;
+  margin:0;
+}
+
+body.chat-fullscreen .content,
+body.chat-fullscreen #page-chat {
+  height:100%;
+  min-height:0;
+  margin:0;
+  padding:0;
+}
+
+body.chat-fullscreen #page-chat > .card:last-child {
+  display:flex;
+  flex-direction:column;
+  height:100%;
+  min-height:0;
+  margin:0;
+  padding:0;
+  border:0;
+  border-radius:0;
+  box-shadow:none;
+  background:var(--paper);
+}
+
+body.chat-fullscreen #page-chat > .card:last-child > h2,
+body.chat-fullscreen #page-chat > .card:last-child > p {
+  display:none;
+}
+
+body.chat-fullscreen .chat-layout {
+  display:block;
+  flex:1;
+  min-height:0;
+  height:100%;
+}
+
+body.chat-fullscreen .chat-list {
+  display:none;
+}
+
+body.chat-fullscreen .chat-window {
+  display:flex;
+  flex-direction:column;
+  width:100%;
+  height:100%;
+  min-height:0;
+  border:0;
+  border-radius:0;
+}
+
+body.chat-fullscreen .chat-head {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex:none;
+  padding:14px 16px;
+  padding-top:max(14px, env(safe-area-inset-top));
+  border-bottom:2px solid var(--ink);
+  background:var(--white);
+}
+
+body.chat-fullscreen .chat-back {
+  flex:none;
+  background:var(--purple);
+  padding:9px 12px;
+}
+
+body.chat-fullscreen .messages {
+  flex:1;
+  min-height:0;
+  max-height:none;
+  padding:18px;
+  overscroll-behavior:contain;
+}
+
+body.chat-fullscreen .composer {
+  flex:none;
+  padding:12px;
+  padding-bottom:max(12px, env(safe-area-inset-bottom));
+}
+
+body.chat-fullscreen #chatNotice {
+  flex:none;
+  margin:0;
+  border-radius:0;
+}
+
 @media(max-width:760px) {
   .app { padding:12px 12px 95px }
   .topbar { padding:13px; box-shadow:3px 3px 0 var(--ink) }
@@ -192,6 +326,48 @@ footer { text-align:center; color:var(--muted); font-size:12px; padding:24px 0 6
   .chat-list { grid-template-columns:1fr }
   .card { padding:16px; box-shadow:3px 3px 0 var(--ink) }
   .page-head h1 { font-size:29px }
+
+  body.chat-fullscreen .app {
+    padding:0;
+  }
+
+  body.chat-fullscreen #mainScreen,
+  body.chat-fullscreen .content,
+  body.chat-fullscreen #page-chat {
+    display:block;
+    height:100dvh;
+    min-height:0;
+    margin:0;
+    padding:0;
+  }
+
+  body.chat-fullscreen #page-chat > .card:last-child {
+    height:100dvh;
+    min-height:0;
+    padding:0;
+  }
+
+  body.chat-fullscreen .chat-window {
+    height:100%;
+    min-height:0;
+  }
+
+  body.chat-fullscreen .messages {
+    padding:12px;
+  }
+
+  body.chat-fullscreen .composer {
+    gap:7px;
+  }
+
+  body.chat-fullscreen .composer .btn {
+    padding:11px;
+  }
+
+  body.chat-fullscreen .chat-back {
+    padding:9px 10px;
+    font-size:13px;
+  }
 }
 </style>
 </head>
@@ -370,7 +546,9 @@ function notice(id, message, kind="") {
   el.className = "notice" + (kind ? " " + kind : "");
   el.classList.remove("hidden");
 }
-function clearNotice(id) { $(id).classList.add("hidden"); }
+function clearNotice(id) {
+  $(id).classList.add("hidden");
+}
 
 function setAuthMode(mode) {
   authMode = mode;
@@ -392,8 +570,10 @@ function makeNav() {
   const render = () => navItems.map(item =>
     `<button class="nav ${activePage === item.id ? "active" : ""}" data-nav="${item.id}" type="button">${item.icon}<span>${item.label}</span></button>`
   ).join("");
+
   $("sideNav").innerHTML = render();
   $("mobileNav").innerHTML = render();
+
   document.querySelectorAll("[data-nav]").forEach(button => {
     button.addEventListener("click", () => showPage(button.dataset.nav));
   });
@@ -401,10 +581,22 @@ function makeNav() {
 
 function showPage(page) {
   activePage = page;
+
+  if (page !== "chat") {
+    document.body.classList.remove("chat-fullscreen");
+
+    if (refreshTimer) {
+      clearInterval(refreshTimer);
+      refreshTimer = null;
+    }
+  }
+
   document.querySelectorAll(".page").forEach(el => el.classList.add("hidden"));
   $("page-" + page).classList.remove("hidden");
+
   const selected = navItems.find(item => item.id === page);
   $("pageTitle").textContent = selected.label;
+
   $("pageSubtitle").textContent = ({
     chat:"Temukan orang dan mulai percakapan.",
     pembaruan:"Lihat kabar dan aktivitas terbaru.",
@@ -412,6 +604,7 @@ function showPage(page) {
     calls:"Riwayat panggilan kamu.",
     setting:"Kelola akun dan preferensi kamu."
   })[page];
+
   makeNav();
 }
 
@@ -420,12 +613,14 @@ function showApp(profile) {
   $("authScreen").classList.add("hidden");
   $("mainScreen").classList.remove("hidden");
   $("mobileNav").classList.remove("hidden");
+
   const username = profile.username;
   $("topUser").textContent = "@" + username;
   $("sideUsername").textContent = "@" + username;
   $("profileUsername").textContent = "@" + username;
   $("settingUsername").textContent = "@" + username;
   $("profileAvatar").textContent = username.slice(0,1).toUpperCase();
+
   showPage(activePage);
   loadChatList();
 }
@@ -434,7 +629,14 @@ function showSignedOut() {
   currentUser = null;
   currentProfile = null;
   activePeer = null;
-  if (refreshTimer) clearInterval(refreshTimer);
+
+  document.body.classList.remove("chat-fullscreen");
+
+  if (refreshTimer) {
+    clearInterval(refreshTimer);
+    refreshTimer = null;
+  }
+
   $("authScreen").classList.remove("hidden");
   $("mainScreen").classList.add("hidden");
   $("mobileNav").classList.add("hidden");
@@ -446,25 +648,30 @@ async function loadProfile(user) {
 
   if (error) throw error;
 
-  // Trigger SQL biasanya membuat profil ketika akun didaftarkan.
   if (!data) {
     const requested = (user.user_metadata?.username || "").toLowerCase();
+
     if (!/^[a-z0-9_]{3,24}$/.test(requested)) {
       throw new Error("Profil belum tersedia. Periksa trigger SQL di Supabase.");
     }
+
     const inserted = await db.from("profiles")
       .insert({id:user.id, username:requested})
       .select("id,username").single();
+
     if (inserted.error) throw inserted.error;
     data = inserted.data;
   }
+
   return data;
 }
 
 async function enterApp(user) {
   currentUser = user;
   const profile = await loadProfile(user);
+
   if (!profile) throw new Error("Profil pengguna tidak ditemukan.");
+
   showApp(profile);
 }
 
@@ -473,29 +680,39 @@ async function initialize() {
     notice("authNotice", "Pustaka Supabase gagal dimuat. Periksa koneksi internet.", "error");
     return;
   }
-  if (SUPABASE_URL === "TEMPEL_PROJECT_URL" ||
-      SUPABASE_PUBLISHABLE_KEY === "TEMPEL_PUBLISHABLE_KEY") {
+
+  if (
+    SUPABASE_URL === "TEMPEL_PROJECT_URL" ||
+    SUPABASE_PUBLISHABLE_KEY === "TEMPEL_PUBLISHABLE_KEY"
+  ) {
     notice("authNotice", "Isi Project URL dan Publishable Key di kode terlebih dahulu.", "error");
     return;
   }
 
   try {
     db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
     const {data, error} = await db.auth.getSession();
     if (error) throw error;
+
     if (data.session) {
-      try { await enterApp(data.session.user); }
-      catch (e) { notice("authNotice", "Gagal memuat profil: " + e.message, "error"); }
+      try {
+        await enterApp(data.session.user);
+      } catch (e) {
+        notice("authNotice", "Gagal memuat profil: " + e.message, "error");
+      }
     }
 
     db.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_OUT" || !session) {
         showSignedOut();
       } else if (event === "SIGNED_IN") {
-        // Jalankan operasi profil setelah callback autentikasi selesai.
         setTimeout(async () => {
-          try { await enterApp(session.user); }
-          catch (e) { notice("authNotice", "Gagal memuat profil: " + e.message, "error"); }
+          try {
+            await enterApp(session.user);
+          } catch (e) {
+            notice("authNotice", "Gagal memuat profil: " + e.message, "error");
+          }
         }, 0);
       }
     });
@@ -511,6 +728,7 @@ $("switchAuth").addEventListener("click", () => {
 $("authForm").addEventListener("submit", async event => {
   event.preventDefault();
   clearNotice("authNotice");
+
   if (!db) {
     notice("authNotice", "Supabase belum siap. Periksa konfigurasi.", "error");
     return;
@@ -520,34 +738,42 @@ $("authForm").addEventListener("submit", async event => {
   const password = $("passwordInput").value;
   const username = $("usernameInput").value.trim().toLowerCase();
   const button = $("authSubmit");
+
   button.disabled = true;
   button.textContent = "Memproses...";
 
   try {
     let result;
+
     if (authMode === "register") {
       if (!/^[a-z0-9_]{3,24}$/.test(username)) {
         throw new Error("Username harus 3–24 karakter: huruf, angka, atau garis bawah.");
       }
+
       result = await db.auth.signUp({
-        email, password,
+        email,
+        password,
         options: {
           data: {username},
           emailRedirectTo: window.location.origin
         }
       });
+
       if (result.error) throw result.error;
 
       if (!result.data.session) {
-        notice("authNotice",
+        notice(
+          "authNotice",
           "Pendaftaran diterima. Periksa email untuk verifikasi, lalu masuk. Jika username sudah dipakai, pilih username lain.",
-          "success");
+          "success"
+        );
       } else {
         await enterApp(result.data.user);
         notice("chatNotice", "Akun berhasil dibuat.", "success");
       }
     } else {
       result = await db.auth.signInWithPassword({email, password});
+
       if (result.error) throw result.error;
       await enterApp(result.data.user);
     }
@@ -561,18 +787,27 @@ $("authForm").addEventListener("submit", async event => {
 
 $("logoutButton").addEventListener("click", async () => {
   if (!db) return;
+
   const {error} = await db.auth.signOut();
-  if (error) notice("chatNotice", "Gagal keluar: " + error.message, "error");
+
+  if (error) {
+    notice("chatNotice", "Gagal keluar: " + error.message, "error");
+  }
 });
 
 function safeText(value) {
   return String(value).replace(/[&<>"']/g, c => ({
-    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
   })[c]);
 }
 
 function personElement(profile, buttonLabel="Chat") {
   const username = safeText(profile.username);
+
   return `<div class="person">
     <div class="avatar">${safeText(profile.username.slice(0,1).toUpperCase())}</div>
     <div class="person-info">
@@ -588,8 +823,11 @@ $("searchForm").addEventListener("submit", async event => {
   event.preventDefault();
   clearNotice("searchNotice");
   $("searchResults").innerHTML = "";
+
   const term = $("searchInput").value.trim().toLowerCase();
+
   if (!term || !db || !currentUser) return;
+
   if (!/^[a-z0-9_]{1,24}$/.test(term)) {
     notice("searchNotice", "Gunakan username, huruf kecil, angka, atau garis bawah.", "error");
     return;
@@ -597,15 +835,24 @@ $("searchForm").addEventListener("submit", async event => {
 
   try {
     const {data, error} = await db.from("profiles")
-      .select("id,username").ilike("username", term)
+      .select("id,username")
+      .ilike("username", term)
       .limit(20);
+
     if (error) throw error;
+
     const others = (data || []).filter(p => p.id !== currentUser.id);
+
     if (!others.length) {
-      $("searchResults").innerHTML = '<div class="empty">Username tidak ditemukan. Periksa ejaannya.</div>';
+      $("searchResults").innerHTML =
+        '<div class="empty">Username tidak ditemukan. Periksa ejaannya.</div>';
       return;
     }
-    $("searchResults").innerHTML = others.map(p => personElement(p, "Mulai chat")).join("");
+
+    $("searchResults").innerHTML = others
+      .map(p => personElement(p, "Mulai chat"))
+      .join("");
+
     attachPeerButtons();
   } catch (e) {
     notice("searchNotice", "Pencarian gagal: " + e.message, "error");
@@ -625,11 +872,14 @@ function attachPeerButtons() {
 
 async function loadChatList() {
   if (!currentUser || !db) return;
+
   try {
     const {data, error} = await db.from("direct_messages")
       .select("sender_id,receiver_id,created_at")
       .or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`)
-      .order("created_at", {ascending:false}).limit(200);
+      .order("created_at", {ascending:false})
+      .limit(200);
+
     if (error) throw error;
 
     const ids = [...new Set((data || []).map(m =>
@@ -641,16 +891,25 @@ async function loadChatList() {
       return;
     }
 
-    const profiles = await db.from("profiles").select("id,username").in("id", ids);
+    const profiles = await db.from("profiles")
+      .select("id,username")
+      .in("id", ids);
+
     if (profiles.error) throw profiles.error;
+
     const map = new Map(profiles.data.map(p => [p.id,p]));
     const peers = ids.map(id => map.get(id)).filter(Boolean);
+
     $("chatList").innerHTML = peers.map(p =>
       `<button class="chat-entry" data-chat-id="${safeText(p.id)}" type="button">
         <div class="avatar">${safeText(p.username[0].toUpperCase())}</div>
-        <div class="person-info"><div class="person-name">@${safeText(p.username)}</div><div class="handle">Buka percakapan</div></div>
+        <div class="person-info">
+          <div class="person-name">@${safeText(p.username)}</div>
+          <div class="handle">Buka percakapan</div>
+        </div>
       </button>`
     ).join("");
+
     document.querySelectorAll("[data-chat-id]").forEach(button => {
       button.addEventListener("click", () => {
         const peer = peers.find(p => p.id === button.dataset.chatId);
@@ -664,17 +923,27 @@ async function loadChatList() {
 
 async function openChat(peer) {
   if (!currentUser || !db || peer.id === currentUser.id) return;
+
   activePeer = peer;
+  document.body.classList.add("chat-fullscreen");
+
   document.querySelectorAll(".chat-entry").forEach(el => {
     el.classList.toggle("active", el.dataset.chatId === peer.id);
   });
 
   $("chatWindow").innerHTML = `
     <div class="chat-head">
-      <div class="person-name">@${safeText(peer.username)}</div>
-      <div class="handle">Percakapan pribadi</div>
+      <button class="btn chat-back" id="chatBackButton" type="button">
+        ← Kembali
+      </button>
+      <div>
+        <div class="person-name">@${safeText(peer.username)}</div>
+        <div class="handle">Percakapan pribadi</div>
+      </div>
     </div>
-    <div id="messages" class="messages"><div class="empty">Memuat pesan...</div></div>
+    <div id="messages" class="messages">
+      <div class="empty">Memuat pesan...</div>
+    </div>
     <form id="messageForm" class="composer">
       <input id="messageInput" class="input" maxlength="4000"
         placeholder="Tulis pesan..." autocomplete="off" required>
@@ -682,41 +951,75 @@ async function openChat(peer) {
     </form>`;
 
   $("messageForm").addEventListener("submit", sendMessage);
+
+  $("chatBackButton").addEventListener("click", () => {
+    document.body.classList.remove("chat-fullscreen");
+
+    if (refreshTimer) {
+      clearInterval(refreshTimer);
+      refreshTimer = null;
+    }
+
+    activePeer = null;
+
+    $("chatWindow").innerHTML =
+      '<div class="empty">Pilih pengguna dari hasil pencarian untuk memulai chat.</div>';
+  });
+
   await loadMessages();
+
   if (refreshTimer) clearInterval(refreshTimer);
+
   refreshTimer = setInterval(() => {
-    if (activePeer && activePeer.id === peer.id) loadMessages();
+    if (activePeer && activePeer.id === peer.id) {
+      loadMessages();
+    }
   }, 5000);
 }
 
 async function loadMessages() {
   if (!currentUser || !activePeer || !db) return;
+
   const peer = activePeer;
+
   try {
     const {data, error} = await db.from("direct_messages")
       .select("id,sender_id,receiver_id,content,created_at")
       .or(
         `and(sender_id.eq.${currentUser.id},receiver_id.eq.${peer.id}),and(sender_id.eq.${peer.id},receiver_id.eq.${currentUser.id})`
       )
-      .order("created_at", {ascending:true}).limit(200);
+      .order("created_at", {ascending:true})
+      .limit(200);
+
     if (error) throw error;
+
     if (!activePeer || activePeer.id !== peer.id) return;
 
     const container = $("messages");
-    const atBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 70;
+    if (!container) return;
+
+    const atBottom =
+      container.scrollHeight - container.scrollTop - container.clientHeight < 70;
+
     if (!data.length) {
-      container.innerHTML = '<div class="empty">Belum ada pesan. Mulai percakapan di sini.</div>';
+      container.innerHTML =
+        '<div class="empty">Belum ada pesan. Mulai percakapan di sini.</div>';
       return;
     }
 
     container.innerHTML = data.map(m => {
       const mine = m.sender_id === currentUser.id;
       const time = new Date(m.created_at).toLocaleString("id-ID", {
-        hour:"2-digit", minute:"2-digit"
+        hour:"2-digit",
+        minute:"2-digit"
       });
+
       return `<div class="bubble ${mine ? "mine" : ""}">${safeText(m.content)}<span class="time">${time}</span></div>`;
     }).join("");
-    if (atBottom) container.scrollTop = container.scrollHeight;
+
+    if (atBottom) {
+      container.scrollTop = container.scrollHeight;
+    }
   } catch (e) {
     notice("chatNotice", "Gagal memuat pesan: " + e.message, "error");
   }
@@ -724,20 +1027,26 @@ async function loadMessages() {
 
 async function sendMessage(event) {
   event.preventDefault();
+
   if (!currentUser || !activePeer || !db) return;
+
   const input = $("messageInput");
   const content = input.value.trim();
+
   if (!content) return;
 
   const button = event.submitter;
   if (button) button.disabled = true;
+
   try {
     const {error} = await db.from("direct_messages").insert({
       sender_id:currentUser.id,
       receiver_id:activePeer.id,
       content
     });
+
     if (error) throw error;
+
     input.value = "";
     await loadMessages();
     await loadChatList();
