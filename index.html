@@ -86,6 +86,13 @@ button:focus-visible,input:focus-visible{outline:3px solid #7c65e8;outline-offse
 .setting-row strong{display:block;font-size:14px}
 .setting-row small{color:var(--muted);display:block;margin-top:4px;overflow-wrap:anywhere}
 footer{text-align:center;color:var(--muted);font-size:12px;padding:24px 0 6px}
+.media-thumb{display:block;max-width:min(260px,100%);max-height:320px;border:1.5px solid var(--line);border-radius:10px;margin-top:6px;object-fit:contain;background:#eee}
+.status-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:16px}
+.status-card{border:1.5px solid var(--line);border-radius:14px;padding:10px;background:#fff;min-width:0}
+.status-card img,.status-card video{width:100%;height:190px;object-fit:cover;border-radius:10px;background:#eee}
+.status-owner{font-weight:850;font-size:13px;margin:8px 0 4px;overflow-wrap:anywhere}
+.call-panel{display:grid;gap:12px}.call-video{width:100%;max-height:320px;background:#202020;border:1.5px solid var(--line);border-radius:12px;object-fit:contain}.call-actions{display:flex;gap:8px;flex-wrap:wrap}.status-compose{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+
 .mobile-nav{display:none}
 
 /* NAVBAR MOBILE: gaya kapsul seperti foto referensi */
@@ -325,7 +332,13 @@ body.chat-fullscreen #chatNotice{flex:none;margin:0;border-radius:0}
         <div class="card">
           <h2>Pembaruan</h2>
           <p class="muted">Tempat untuk pembaruan profil, kabar, dan aktivitas komunitas.</p>
-          <div class="empty">Belum ada pembaruan untuk ditampilkan.</div>
+          <form id="statusForm">
+            <div class="field"><label for="statusCaption">KETERANGAN STATUS (OPSIONAL)</label><input id="statusCaption" class="input" maxlength="180" placeholder="Lagi ngapain?" /></div>
+            <div class="status-compose"><input id="statusFile" type="file" accept="image/*,video/*" required /><button class="btn btn-primary" type="submit">Upload status</button></div>
+            <p class="muted">Foto/video status tersedia selama 24 jam. Maksimal 25 MB.</p>
+          </form>
+          <div id="statusNotice" class="notice hidden" role="status"></div>
+          <div id="statusGrid" class="status-grid"><div class="empty">Memuat status...</div></div>
         </div>
       </section>
 
@@ -341,7 +354,16 @@ body.chat-fullscreen #chatNotice{flex:none;margin:0;border-radius:0}
         <div class="card">
           <h2>Calls</h2>
           <p class="muted">Riwayat panggilan akan ditampilkan di halaman ini.</p>
-          <div class="empty">Panggilan suara dan video belum diaktifkan.</div>
+          <p class="muted">Mulai panggilan dari percakapan yang sedang dibuka. Browser akan meminta izin mikrofon/kamera.</p>
+          <div id="callsNotice" class="notice hidden" role="status"></div>
+          <div id="incomingCall" class="notice hidden" role="status"></div>
+          <div class="call-panel">
+            <video id="remoteVideo" class="call-video" autoplay playsinline></video>
+            <video id="localVideo" class="call-video" autoplay playsinline muted></video>
+            <div id="callStatus" class="muted">Belum ada panggilan aktif.</div>
+            <div class="call-actions"><button id="acceptCall" class="btn btn-primary hidden" type="button">Terima panggilan</button><button id="rejectCall" class="btn hidden" type="button">Tolak</button><button id="muteCall" class="btn hidden" type="button">Mute mic</button><button id="cameraCall" class="btn hidden" type="button">Matikan kamera</button><button id="endCall" class="btn btn-purple hidden" type="button">Akhiri panggilan</button></div>
+            <p class="muted">Untuk memulai: buka chat teman lalu gunakan tombol telepon/video di bagian atas chat.</p>
+          </div>
         </div>
       </section>
 
@@ -656,15 +678,21 @@ async function openChat(peer){
   $("chatWindow").innerHTML=`
     <div class="chat-head">
       <button class="btn chat-back" id="chatBackButton" type="button">← Kembali</button>
-      <div><div class="person-name">@${safeText(peer.username)}</div><div class="handle">Percakapan pribadi</div></div>
+      <div style="flex:1;min-width:0"><div class="person-name">@${safeText(peer.username)}</div><div class="handle">Percakapan pribadi</div></div>
+      <button class="btn" id="voiceCallButton" type="button" title="Panggilan suara">☎</button><button class="btn btn-purple" id="videoCallButton" type="button" title="Video call">▣</button>
     </div>
     <div id="messages" class="messages"><div class="empty">Memuat pesan...</div></div>
     <form id="messageForm" class="composer">
-      <input id="messageInput" class="input" maxlength="4000" placeholder="Tulis pesan..." autocomplete="off" required>
+      <input id="messageInput" class="input" maxlength="4000" placeholder="Tulis pesan..." autocomplete="off">
+      <button id="photoButton" class="btn" type="button" title="Kirim foto">📷</button><input id="photoInput" type="file" accept="image/*" class="hidden">
       <button class="btn btn-primary" type="submit">Kirim</button>
     </form>`;
 
   $("messageForm").addEventListener("submit",sendMessage);
+  $("photoButton").addEventListener("click",()=>$("photoInput").click());
+  $("photoInput").addEventListener("change",sendPhoto);
+  $("voiceCallButton").addEventListener("click",()=>startCall(false));
+  $("videoCallButton").addEventListener("click",()=>startCall(true));
   $("chatBackButton").addEventListener("click",()=>{
     document.body.classList.remove("chat-fullscreen");
     if(refreshTimer){clearInterval(refreshTimer);refreshTimer=null}
@@ -699,7 +727,10 @@ async function loadMessages(){
     container.innerHTML=data.map(m=>{
       const mine=m.sender_id===currentUser.id;
       const time=new Date(m.created_at).toLocaleString("id-ID",{hour:"2-digit",minute:"2-digit"});
-      return `<div class="bubble ${mine?"mine":""}">${safeText(m.content)}<span class="time">${time}</span></div>`;
+      const isPhoto=String(m.content||"").startsWith("[photo]");
+      const payload=isPhoto?String(m.content).slice(7):String(m.content||"");
+      const body=isPhoto?`<a href="${safeText(payload)}" target="_blank" rel="noopener"><img class="media-thumb" src="${safeText(payload)}" alt="Foto yang dikirim" loading="lazy"></a>`:safeText(payload);
+      return `<div class="bubble ${mine?"mine":""}">${body}<span class="time">${time}</span></div>`;
     }).join("");
     if(atBottom)container.scrollTop=container.scrollHeight;
   }catch(e){
@@ -733,6 +764,48 @@ async function sendMessage(event){
   }
 }
 
+// MEDIA, STATUS, AND WEBRTC CALLS
+const MEDIA_BUCKET = "chat-media";
+let pc=null, localStream=null, callChannel=null, currentCallId=null, callPoll=null, callMode="audio", callMuted=false, cameraOff=false;
+const rtcConfig={iceServers:[{urls:"stun:stun.l.google.com:19302"}]};
+function escapeUrl(v){try{return new URL(v).href}catch{return ""}}
+async function uploadMedia(file,folder){
+  if(!file)throw new Error("Pilih file terlebih dahulu.");
+  if(file.size>25*1024*1024)throw new Error("Ukuran file maksimal 25 MB.");
+  if(!/^image\//.test(file.type)&&!/^video\//.test(file.type))throw new Error("Format file tidak didukung.");
+  const ext=(file.name.split(".").pop()||"bin").replace(/[^a-zA-Z0-9]/g,"").slice(0,8)||"bin";
+  const path=`${folder}/${currentUser.id}/${Date.now()}-${crypto.randomUUID()}.${ext}`;
+  const {error}=await db.storage.from(MEDIA_BUCKET).upload(path,file,{contentType:file.type,upsert:false});
+  if(error)throw error;
+  const {data}=db.storage.from(MEDIA_BUCKET).getPublicUrl(path);
+  return data.publicUrl;
+}
+async function sendPhoto(){
+  const file=$("photoInput").files[0]; if(!file||!activePeer)return;
+  try{const url=await uploadMedia(file,"photos");const {error}=await db.from("direct_messages").insert({sender_id:currentUser.id,receiver_id:activePeer.id,content:"[photo]"+url});if(error)throw error;await loadMessages();await loadChatList();notice("chatNotice","Foto berhasil dikirim.","success");}
+  catch(e){notice("chatNotice","Foto gagal dikirim: "+e.message,"error");}finally{$("photoInput").value=""}
+}
+$("statusForm").addEventListener("submit",async e=>{
+ e.preventDefault();if(!currentUser)return;const file=$("statusFile").files[0];if(!file)return;
+ try{const url=await uploadMedia(file,"statuses");const {error}=await db.from("community_statuses").insert({user_id:currentUser.id,media_url:url,media_type:file.type.startsWith("video/")?"video":"image",caption:$("statusCaption").value.trim(),expires_at:new Date(Date.now()+86400000).toISOString()});if(error)throw error;$("statusForm").reset();notice("statusNotice","Status berhasil diunggah.","success");await loadStatuses();}
+ catch(err){notice("statusNotice","Status gagal diunggah: "+err.message,"error")}
+});
+async function loadStatuses(){if(!db||!currentUser)return;try{const {data,error}=await db.from("community_statuses").select("id,user_id,media_url,media_type,caption,created_at,expires_at").gt("expires_at",new Date().toISOString()).order("created_at",{ascending:false}).limit(100);if(error)throw error;const ids=[...new Set((data||[]).map(x=>x.user_id))];let profiles=[];if(ids.length){const r=await db.from("profiles").select("id,username").in("id",ids);if(r.error)throw r.error;profiles=r.data||[]}const names=new Map(profiles.map(p=>[p.id,p.username]));$("statusGrid").innerHTML=(data||[]).length?(data||[]).map(x=>{const media=x.media_type==="video"?`<video src="${safeText(x.media_url)}" controls playsinline></video>`:`<a href="${safeText(x.media_url)}" target="_blank" rel="noopener"><img src="${safeText(x.media_url)}" alt="Status" loading="lazy"></a>`;return `<article class="status-card">${media}<div class="status-owner">@${safeText(names.get(x.user_id)||"pengguna")}</div><div class="muted">${safeText(x.caption||"")}</div><div class="time">${new Date(x.created_at).toLocaleString("id-ID")}</div></article>`}).join(""):'<div class="empty">Belum ada status aktif.</div>';}catch(e){notice("statusNotice","Tidak bisa memuat status: "+e.message,"error")}}
+const oldShowPage=showPage;
+showPage=function(page){oldShowPage(page);if(page==="pembaruan")loadStatuses();if(page==="calls")checkIncomingCall();};
+async function sendSignal(toUser,kind,payload,callId=currentCallId){const {error}=await db.from("call_signals").insert({call_id:callId,from_user:currentUser.id,to_user:toUser,kind,payload:payload||{}});if(error)throw error}
+async function startCall(video){if(!activePeer){notice("chatNotice","Buka chat teman terlebih dahulu.","error");return}if(!navigator.mediaDevices?.getUserMedia){notice("chatNotice","Browser ini tidak mendukung panggilan. Gunakan HTTPS dan browser terbaru.","error");return}try{callMode=video?"video":"audio";currentCallId=crypto.randomUUID();localStream=await navigator.mediaDevices.getUserMedia({audio:true,video});$("localVideo").srcObject=localStream;pc=new RTCPeerConnection(rtcConfig);localStream.getTracks().forEach(t=>pc.addTrack(t,localStream));pc.ontrack=e=>{$("remoteVideo").srcObject=e.streams[0]};pc.onicecandidate=e=>{if(e.candidate)sendSignal(activePeer.id,"ice",e.candidate.toJSON()).catch(console.error)};pc.onconnectionstatechange=()=>{$("callStatus").textContent="Status panggilan: "+pc.connectionState};const offer=await pc.createOffer();await pc.setLocalDescription(offer);await sendSignal(activePeer.id,"offer",{sdp:offer.sdp,video,peerName:currentProfile.username});showCallControls(true);$("callStatus").textContent="Memanggil @"+activePeer.username+"…";beginSignalPolling();}catch(e){cleanupCall();notice("callsNotice","Panggilan gagal: "+e.message,"error")}}
+function showCallControls(on){["muteCall","cameraCall","endCall"].forEach(id=>$(id).classList.toggle("hidden",!on));}
+function cleanupCall(){if(callPoll){clearInterval(callPoll);callPoll=null}if(pc){pc.close();pc=null}if(localStream){localStream.getTracks().forEach(t=>t.stop());localStream=null}$("localVideo").srcObject=null;$("remoteVideo").srcObject=null;showCallControls(false);$("acceptCall").classList.add("hidden");$("rejectCall").classList.add("hidden");$("callStatus").textContent="Tidak ada panggilan aktif.";currentCallId=null;callChannel=null}
+async function beginSignalPolling(){if(callPoll)clearInterval(callPoll);callPoll=setInterval(async()=>{if(!currentUser||!db||!currentCallId)return;try{const {data,error}=await db.from("call_signals").select("id,call_id,from_user,to_user,kind,payload,created_at").eq("to_user",currentUser.id).eq("call_id",currentCallId).is("processed_at",null).order("created_at");if(error)throw error;for(const sig of data||[]){await handleSignal(sig);await db.from("call_signals").update({processed_at:new Date().toISOString()}).eq("id",sig.id)}}catch(e){console.error("Signal polling:",e)}},1200)}
+async function handleSignal(sig){if(sig.kind==="answer"&&pc){await pc.setRemoteDescription({type:"answer",sdp:sig.payload.sdp});$("callStatus").textContent="Panggilan tersambung."}else if(sig.kind==="ice"&&pc&&sig.payload){try{await pc.addIceCandidate(sig.payload)}catch(e){console.warn(e)}}else if(sig.kind==="reject"||sig.kind==="end"){cleanupCall();notice("callsNotice",sig.kind==="reject"?"Panggilan ditolak.":"Panggilan berakhir.")}}
+async function checkIncomingCall(){if(!currentUser||!db)return;try{const {data,error}=await db.from("call_signals").select("id,call_id,from_user,to_user,kind,payload,created_at").eq("to_user",currentUser.id).eq("kind","offer").is("processed_at",null).order("created_at",{ascending:false}).limit(1);if(error)throw error;const offer=data?.[0];if(!offer||currentCallId)return;currentCallId=offer.call_id;const sender=await db.from("profiles").select("id,username").eq("id",offer.from_user).maybeSingle();activePeer=sender.data||{id:offer.from_user,username:"pengguna"};callMode=offer.payload?.video?"video":"audio";$("incomingCall").textContent=`Panggilan ${callMode==="video"?"video":"suara"} masuk dari @${activePeer.username}.`;$("incomingCall").classList.remove("hidden");$("acceptCall").classList.remove("hidden");$("rejectCall").classList.remove("hidden");$("acceptCall").onclick=()=>acceptCall(offer);$("rejectCall").onclick=async()=>{await sendSignal(offer.from_user,"reject",{},offer.call_id);$("incomingCall").classList.add("hidden");cleanupCall()};}catch(e){notice("callsNotice","Tidak bisa memeriksa panggilan: "+e.message,"error")}}
+async function acceptCall(offer){try{localStream=await navigator.mediaDevices.getUserMedia({audio:true,video:callMode==="video"});$("localVideo").srcObject=localStream;pc=new RTCPeerConnection(rtcConfig);localStream.getTracks().forEach(t=>pc.addTrack(t,localStream));pc.ontrack=e=>{$("remoteVideo").srcObject=e.streams[0]};pc.onicecandidate=e=>{if(e.candidate)sendSignal(offer.from_user,"ice",e.candidate.toJSON(),offer.call_id).catch(console.error)};await pc.setRemoteDescription({type:"offer",sdp:offer.payload.sdp});const answer=await pc.createAnswer();await pc.setLocalDescription(answer);await sendSignal(offer.from_user,"answer",{sdp:answer.sdp},offer.call_id);await db.from("call_signals").update({processed_at:new Date().toISOString()}).eq("id",offer.id);$("incomingCall").classList.add("hidden");showCallControls(true);beginSignalPolling();$("callStatus").textContent="Panggilan tersambung.";}catch(e){cleanupCall();notice("callsNotice","Tidak bisa menerima panggilan: "+e.message,"error")}}
+$("muteCall").addEventListener("click",()=>{if(!localStream)return;callMuted=!callMuted;localStream.getAudioTracks().forEach(t=>t.enabled=!callMuted);$("muteCall").textContent=callMuted?"Aktifkan mic":"Mute mic"});
+$("cameraCall").addEventListener("click",()=>{if(!localStream)return;cameraOff=!cameraOff;localStream.getVideoTracks().forEach(t=>t.enabled=!cameraOff);$("cameraCall").textContent=cameraOff?"Aktifkan kamera":"Matikan kamera"});
+$("endCall").addEventListener("click",async()=>{try{if(activePeer&&currentCallId)await sendSignal(activePeer.id,"end",{});}catch(e){console.warn(e)}cleanupCall()});
+// Poll signaling for offers while logged in. Configure call_signals RLS to limit rows to participants.
+setInterval(()=>{if(currentUser&&db&&!currentCallId)checkIncomingCall()},5000);
 makeNav();
 setAuthMode("login");
 initialize();
